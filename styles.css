@@ -442,9 +442,16 @@ textarea { resize: vertical; min-height: 64px; }
 /* =============================================
    8. INVOICE LINES
    ============================================= */
+
+/*
+ * FIX: Columnas redimensionadas para que "Total" nunca desborde.
+ * Se usa minmax() en la columna del total para que crezca si el
+ * valor es largo, y min-width:0 en todos los hijos para que el
+ * grid los contenga correctamente.
+ */
 .lines-header {
   display: grid;
-  grid-template-columns: 1fr 60px 90px 80px 32px;
+  grid-template-columns: 1fr 56px 88px minmax(82px, auto) 28px;
   gap: var(--sp-2);
   padding: 0 4px var(--sp-2);
   font-size: 0.72rem;
@@ -458,11 +465,17 @@ textarea { resize: vertical; min-height: 64px; }
 
 .invoice-line {
   display: grid;
-  grid-template-columns: 1fr 60px 90px 80px 32px;
+  grid-template-columns: 1fr 56px 88px minmax(82px, auto) 28px;
   gap: var(--sp-2);
   align-items: center;
   padding: 4px 0;
   animation: lineIn 0.2s var(--t-slow) both;
+}
+
+/* Evita que cualquier celda desborde su columna */
+.invoice-line > *,
+.lines-header > * {
+  min-width: 0;
 }
 
 @keyframes lineIn {
@@ -478,7 +491,7 @@ textarea { resize: vertical; min-height: 64px; }
 
 .line-total {
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 500;
   color: var(--text-primary);
   text-align: right;
@@ -490,6 +503,11 @@ textarea { resize: vertical; min-height: 64px; }
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  /* FIX: evitar desbordamiento del valor monetario */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .btn-remove-line {
@@ -1089,9 +1107,10 @@ textarea { resize: vertical; min-height: 64px; }
 
   .privacy-banner__inner { flex-direction: column; align-items: flex-start; }
 
+  /* FIX MÓVIL: ocultar cabecera de columnas y usar grid adaptado */
   .lines-header { display: none; }
   .invoice-line {
-    grid-template-columns: 1fr 50px 80px 70px 28px;
+    grid-template-columns: 1fr 48px 78px minmax(72px, auto) 28px;
     gap: 4px;
   }
 
