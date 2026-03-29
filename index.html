@@ -1,530 +1,441 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="es" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FacturaPro Smart | Asistente de Facturación 2026</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'media',
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
-                    animation: {
-                        'fade-in': 'fadeIn 0.3s ease-out',
-                        'slide-up': 'slideUp 0.4s ease-out',
-                    },
-                    keyframes: {
-                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
-                        slideUp: { '0%': { transform: 'translateY(10px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } }
-                    }
-                }
-            }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generador de Facturas Gratis para Autónomos España 2026 | Sin Registro</title>
+  <meta name="description" content="Crea facturas profesionales gratis en segundos. Sin registro, 100% privado, funciona en tu navegador. Para autónomos en España 2026. Con IVA, IRPF y descarga en PDF.">
+  <meta name="keywords" content="generador facturas gratis, hacer factura autónomo España, crear factura online sin registro, factura electrónica 2026, plantilla factura autónomo">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="NFZi">
+  <link rel="canonical" href="https://facturasgratis.es/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Generador de Facturas Gratis para Autónomos España 2026">
+  <meta property="og:description" content="Crea facturas profesionales en segundos. Sin registro. 100% privado. Todo ocurre en tu navegador.">
+  <meta property="og:locale" content="es_ES">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Generador de Facturas Gratis — Sin Registro">
+  <meta name="twitter:description" content="Herramienta de facturación para autónomos en España. Gratis, privado, descarga en PDF.">
+
+  <!-- Schema Markup: SoftwareApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Generador de Facturas Gratis para Autónomos España",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "EUR"
+    },
+    "description": "Herramienta gratuita para crear facturas profesionales. Sin registro, 100% privado, funciona offline en el navegador.",
+    "featureList": [
+      "Generación de facturas sin registro",
+      "Descarga en PDF",
+      "IVA 21%, 10%, 4%, 0%",
+      "IRPF 15%, 7%, 0%",
+      "Almacenamiento local opcional",
+      "Privacidad total"
+    ],
+    "inLanguage": "es",
+    "isAccessibleForFree": true
+  }
+  </script>
+
+  <!-- FAQ Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "¿Es gratis el generador de facturas?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sí, es completamente gratuito. No hay versión de pago, sin límites de facturas."
         }
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        @media print {
-            .no-print { display: none !important; }
-            body { background: white; margin: 0; }
-            #invoice-canvas { box-shadow: none !important; border: none !important; width: 100% !important; margin: 0 !important; padding: 1cm !important; }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Necesito registrarme para usar la herramienta?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. La herramienta funciona al 100% sin registro ni cuenta. Entra y genera tu factura de inmediato."
         }
-        .input-focus { @apply focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all; }
-        
-        /* Botones de opción mejorados */
-        .smart-option { 
-            @apply relative border-2 border-slate-200 dark:border-slate-800 p-4 rounded-2xl transition-all duration-200 cursor-pointer bg-white dark:bg-slate-900 shadow-sm hover:border-blue-300 hover:shadow-md active:scale-[0.98];
+      },
+      {
+        "@type": "Question",
+        "name": "¿Mis datos se guardan en algún servidor?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Todos tus datos permanecen en tu navegador. No se envía nada a ningún servidor. Puedes activar el guardado local opcional en tu dispositivo."
         }
-        .smart-option.active { 
-            @apply border-blue-600 bg-blue-50 dark:bg-blue-900/20 ring-4 ring-blue-600/10;
+      },
+      {
+        "@type": "Question",
+        "name": "¿Las facturas generadas son legales en España?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sí. La herramienta incluye todos los campos obligatorios según la normativa española: número correlativo, fecha, NIF del emisor y receptor, base imponible, tipo de IVA e IRPF y total."
         }
-        .smart-option .check-icon { 
-            @apply absolute top-3 right-3 opacity-0 scale-50 transition-all duration-300;
+      },
+      {
+        "@type": "Question",
+        "name": "¿Qué tipo de IVA debo aplicar?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "El IVA general es el 21%. El tipo reducido (10%) aplica a ciertos servicios como hostelería o transporte. El superreducido (4%) es para productos básicos. Existen también actividades exentas de IVA."
         }
-        .smart-option.active .check-icon { 
-            @apply opacity-100 scale-100 text-blue-600;
-        }
-    </style>
+      }
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased font-sans flex flex-col min-h-screen">
+<body>
 
-    <!-- Header -->
-    <header class="no-print bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50">
-        <div class="max-w-[1400px] mx-auto px-4 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-500/20">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                </div>
-                <div>
-                    <span class="font-extrabold text-xl tracking-tight">Factura<span class="text-blue-600">Pro</span></span>
-                    <span class="block text-[10px] text-slate-500 font-medium uppercase tracking-widest leading-none">Smart Assistant v2.0</span>
-                </div>
-            </div>
-            <button onclick="tryPrint()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg shadow-blue-600/30 flex items-center gap-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                Descargar Factura
-            </button>
-        </div>
-    </header>
-
-    <main class="max-w-[1400px] mx-auto p-4 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 flex-grow">
-        
-        <!-- Panel de Control (Izquierda) -->
-        <div class="no-print lg:col-span-5 space-y-8 animate-fade-in">
-            
-            <!-- 1. ASISTENTE GUIADO -->
-            <section class="space-y-6">
-                <div class="flex items-center gap-4">
-                    <span class="flex h-10 w-10 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-lg shadow-blue-600/20 text-sm font-bold">1</span>
-                    <h2 class="font-extrabold text-2xl tracking-tight">Configuramos los impuestos</h2>
-                </div>
-
-                <!-- Paso 1: Tipo Cliente -->
-                <div class="space-y-4">
-                    <p class="text-sm font-bold text-slate-500 uppercase tracking-widest">¿Para quién es la factura?</p>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div id="type-prof" onclick="setSmartConfig('clientType', 'professional')" class="smart-option group">
-                            <div class="check-icon"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg></div>
-                            <div class="p-1">
-                                <p class="text-base font-bold text-slate-900 dark:text-white">Empresa / Autónomo</p>
-                                <p class="text-xs text-slate-500 mt-1">Sujeto a retención IRPF si eres profesional.</p>
-                            </div>
-                        </div>
-                        <div id="type-part" onclick="setSmartConfig('clientType', 'individual')" class="smart-option group">
-                            <div class="check-icon"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg></div>
-                            <div class="p-1">
-                                <p class="text-base font-bold text-slate-900 dark:text-white">Particular</p>
-                                <p class="text-xs text-slate-500 mt-1">Sin retención IRPF (pago neto).</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Paso 2: Ubicación (Aparece condicionalmente o con menos peso) -->
-                <div id="step-location" class="space-y-4 animate-slide-up">
-                    <p class="text-sm font-bold text-slate-500 uppercase tracking-widest">¿Dónde opera el cliente?</p>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <div id="loc-es" onclick="setSmartConfig('location', 'es')" class="smart-option text-center">
-                            <div class="check-icon"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"></path></svg></div>
-                            <p class="text-sm font-bold">España</p>
-                            <p class="text-[10px] text-slate-400 mt-1">IVA 21%</p>
-                        </div>
-                        <div id="loc-ue" onclick="setSmartConfig('location', 'ue')" class="smart-option text-center">
-                            <div class="check-icon"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"></path></svg></div>
-                            <p class="text-sm font-bold">UE (ROI)</p>
-                            <p class="text-[10px] text-slate-400 mt-1">IVA 0%</p>
-                        </div>
-                        <div id="loc-ext" onclick="setSmartConfig('location', 'ext')" class="smart-option text-center">
-                            <div class="check-icon"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"></path></svg></div>
-                            <p class="text-sm font-bold">Exportación</p>
-                            <p class="text-[10px] text-slate-400 mt-1">Exento</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Feedback del asistente -->
-                <div id="smart-advice" class="p-5 bg-blue-600 rounded-3xl text-white shadow-xl shadow-blue-600/20 flex items-start gap-4">
-                    <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center shrink-0">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    </div>
-                    <p class="text-sm font-medium leading-relaxed" id="advice-text">
-                        Configuración inicial activa. He ajustado el IVA e IRPF automáticamente según tus respuestas.
-                    </p>
-                </div>
-            </section>
-
-            <!-- 2. DATOS DE IDENTIDAD -->
-            <section class="bg-white dark:bg-slate-900 p-8 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 space-y-8 shadow-sm">
-                <div>
-                    <h3 class="text-sm font-black uppercase tracking-widest text-slate-400 mb-6 flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                        Datos del Emisor y Receptor
-                    </h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="space-y-4">
-                            <p class="text-xs font-bold text-slate-400 uppercase tracking-tighter">Tu Identidad</p>
-                            <input type="text" id="em-name" placeholder="Nombre o Razón Social" class="w-full p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border-none input-focus text-sm font-medium">
-                            <input type="text" id="em-nif" placeholder="NIF / CIF" class="w-full p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border-none input-focus text-sm font-medium uppercase">
-                        </div>
-                        <div class="space-y-4">
-                            <p class="text-xs font-bold text-slate-400 uppercase tracking-tighter">Identidad del Cliente</p>
-                            <input type="text" id="cl-name" placeholder="Nombre del Cliente" class="w-full p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border-none input-focus text-sm font-medium">
-                            <input type="text" id="cl-nif" placeholder="NIF / CIF Cliente" class="w-full p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border-none input-focus text-sm font-medium uppercase">
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 3. SERVICIOS Y CONCEPTOS -->
-            <section class="bg-white dark:bg-slate-900 p-8 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 shadow-sm">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-sm font-black uppercase tracking-widest text-slate-400 flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-                        Líneas de Factura
-                    </h3>
-                    <button onclick="addItem()" class="bg-blue-100 text-blue-700 px-4 py-2 rounded-xl text-xs font-bold hover:bg-blue-200 transition-colors">+ AÑADIR</button>
-                </div>
-                <div id="items-list" class="space-y-4"></div>
-            </section>
-
-            <!-- 4. MÉTODO DE PAGO -->
-            <section class="bg-white dark:bg-slate-900 p-8 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 shadow-sm">
-                <h3 class="text-sm font-black uppercase tracking-widest text-slate-400 mb-6">Cómo recibirás el dinero</h3>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4">
-                    <button onclick="setPayMethod('transfer')" class="pay-btn active p-3 rounded-xl border-2 border-slate-100 text-[10px] font-bold uppercase transition-all">Transfer</button>
-                    <button onclick="setPayMethod('bizum')" class="pay-btn p-3 rounded-xl border-2 border-slate-100 text-[10px] font-bold uppercase transition-all">Bizum</button>
-                    <button onclick="setPayMethod('card')" class="pay-btn p-3 rounded-xl border-2 border-slate-100 text-[10px] font-bold uppercase transition-all">Tarjeta</button>
-                    <button onclick="setPayMethod('cash')" class="pay-btn p-3 rounded-xl border-2 border-slate-100 text-[10px] font-bold uppercase transition-all">Efectivo</button>
-                </div>
-                <div id="pay-fields" class="animate-fade-in">
-                    <!-- Dinámico -->
-                </div>
-            </section>
-
-            <!-- CHECKLIST DE SEGURIDAD -->
-            <section class="bg-slate-900 dark:bg-blue-950 p-8 rounded-[2.5rem] text-white shadow-2xl">
-                <h3 class="text-sm font-black uppercase tracking-widest text-slate-500 mb-6">Revisión pre-vuelo</h3>
-                <div id="validation-checklist" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <!-- Dinámico -->
-                </div>
-            </section>
-        </div>
-
-        <!-- Vista Previa (Derecha) -->
-        <div class="lg:col-span-7 sticky top-24">
-            <div id="invoice-canvas" class="bg-white text-slate-900 p-[1.5cm] min-h-[29.7cm] shadow-2xl rounded-sm mx-auto overflow-hidden relative border border-slate-100">
-                
-                <!-- Membrete -->
-                <div class="flex justify-between items-start mb-16">
-                    <div>
-                        <h1 class="text-5xl font-black uppercase tracking-tighter text-slate-900 mb-4">Factura</h1>
-                        <div class="space-y-1">
-                            <p class="text-[10px] font-bold text-slate-400 uppercase">Número Documento</p>
-                            <p id="prev-number" class="text-base font-black text-slate-800"></p>
-                            <p class="text-[10px] font-bold text-slate-400 uppercase mt-4">Fecha Emisión</p>
-                            <p id="prev-date" class="text-sm font-bold text-slate-800"></p>
-                        </div>
-                    </div>
-                    <div class="text-right">
-                        <div id="prev-em-name" class="text-2xl font-black uppercase tracking-tighter text-blue-600">TU EMPRESA</div>
-                        <div id="prev-em-nif" class="text-sm font-bold text-slate-500 uppercase">NIF: -</div>
-                    </div>
-                </div>
-
-                <!-- Cliente -->
-                <div class="grid grid-cols-2 gap-12 mb-16">
-                    <div class="bg-slate-50 p-6 rounded-3xl border border-slate-100">
-                        <p class="text-[9px] font-black uppercase tracking-[0.2em] text-blue-600 mb-2">Cliente / Receptor</p>
-                        <div id="prev-cl-name" class="font-extrabold text-xl leading-tight mb-1">Nombre del Cliente</div>
-                        <div id="prev-cl-nif" class="text-sm font-bold text-slate-400 uppercase tracking-tight">NIF: -</div>
-                    </div>
-                    <div class="flex justify-end pt-4">
-                        <div class="flex flex-col items-center opacity-40">
-                            <div class="w-20 h-20 bg-slate-50 border border-slate-200 flex items-center justify-center text-[7px] text-slate-400 text-center px-2">
-                                [QR VERIFACTU]
-                            </div>
-                            <span class="text-[7px] font-bold text-slate-400 mt-1 uppercase tracking-widest">Reglamento 2026</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tabla -->
-                <table class="w-full text-sm mb-12">
-                    <thead>
-                        <tr class="border-b-4 border-slate-900">
-                            <th class="py-5 font-black uppercase tracking-widest text-[10px] text-left">Concepto</th>
-                            <th class="py-5 font-black uppercase tracking-widest text-[10px] text-center w-16">Cant.</th>
-                            <th class="py-5 font-black uppercase tracking-widest text-[10px] text-right w-24">Precio</th>
-                            <th class="py-5 font-black uppercase tracking-widest text-[10px] text-right w-28">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody id="prev-items-body" class="divide-y divide-slate-100"></tbody>
-                </table>
-
-                <!-- Totales -->
-                <div class="flex justify-end">
-                    <div class="w-full max-w-[320px] space-y-4">
-                        <div class="flex justify-between text-xs font-bold text-slate-400 uppercase tracking-widest">
-                            <span>Base Imponible</span>
-                            <span id="prev-subtotal">0,00 €</span>
-                        </div>
-                        <div id="prev-tax-rows" class="space-y-3"></div>
-                        <div id="prev-irpf-row" class="flex justify-between text-xs font-bold text-rose-600 uppercase tracking-widest bg-rose-50 p-2 rounded-lg">
-                            <span>Retención IRPF (<span id="prev-irpf-rate"></span>%)</span>
-                            <span id="prev-irpf-amount">-0,00 €</span>
-                        </div>
-                        <div class="flex justify-between pt-6 border-t-4 border-slate-900 items-baseline">
-                            <span class="font-black uppercase tracking-tighter text-3xl">Total Neto</span>
-                            <span id="prev-total" class="font-black text-4xl text-blue-600">0,00 €</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Footer Factura -->
-                <div class="absolute bottom-12 left-[1.5cm] right-[1.5cm] space-y-8">
-                    <div id="prev-legal-note" class="p-6 bg-slate-900 rounded-3xl text-[10px] text-slate-300 font-medium italic leading-relaxed shadow-lg"></div>
-                    <div class="flex justify-between items-end border-t border-slate-100 pt-8">
-                        <div>
-                            <p class="text-[10px] font-black uppercase mb-1 text-slate-400 tracking-widest">Método de Pago</p>
-                            <p id="prev-pay-info" class="text-sm text-slate-800 font-black uppercase tracking-tight"></p>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-[10px] text-slate-300 font-bold uppercase tracking-[0.2em]">Copia Oficial para el Cliente</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Pie de página de la Web (No imprimible) -->
-    <footer class="no-print w-full py-10 bg-slate-900 text-white mt-auto overflow-hidden relative">
-        <div class="max-w-[1400px] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8 relative z-10">
-            <div class="flex flex-col gap-2">
-                <span class="text-2xl font-black italic tracking-tighter text-blue-500">Flor Peña.</span>
-                <p class="text-xs text-slate-400 font-bold uppercase tracking-widest">Especialista en Diseño de Interfaces</p>
-            </div>
-            <div class="flex gap-8 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-500">
-                <span>© 2026 FacturaPro Smart</span>
-                <span class="text-blue-500">Ready for AEAT v2.0</span>
-            </div>
-        </div>
-        <!-- Decoración footer -->
-        <div class="absolute -bottom-24 -right-24 w-64 h-64 bg-blue-600/10 rounded-full blur-3xl"></div>
-    </footer>
-
-    <!-- Modal de Error -->
-    <div id="error-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[100] hidden flex items-center justify-center p-6 animate-fade-in">
-        <div class="bg-white dark:bg-slate-900 p-10 rounded-[3rem] max-w-sm w-full shadow-2xl border border-slate-200 dark:border-slate-800 text-center">
-            <div class="w-20 h-20 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-            </div>
-            <h3 class="text-2xl font-black mb-4 tracking-tight">¡Un momento!</h3>
-            <p id="modal-error-list" class="text-sm text-slate-500 dark:text-slate-400 mb-8 leading-relaxed"></p>
-            <button onclick="document.getElementById('error-modal').classList.add('hidden')" class="w-full bg-blue-600 text-white font-bold py-4 rounded-2xl shadow-xl shadow-blue-600/20 hover:bg-blue-700 transition-all">Revisar datos</button>
-        </div>
+  <!-- Privacy Banner -->
+  <div class="privacy-banner" id="privacyBanner">
+    <div class="privacy-banner__inner">
+      <span class="privacy-icon">🔒</span>
+      <p><strong>Tus datos no se almacenan ni se envían.</strong> Todo ocurre en tu navegador.</p>
+      <div class="privacy-actions">
+        <button class="btn-save-local" id="btnEnableStorage" onclick="enableLocalStorage()">
+          💾 Guardar mis datos en este dispositivo
+        </button>
+        <button class="btn-close-banner" onclick="closeBanner()" aria-label="Cerrar">✕</button>
+      </div>
     </div>
+  </div>
 
-    <script>
-        // State
-        let items = [{ id: Date.now(), desc: "Consultoría estratégica", qty: 1, price: 0 }];
-        let smartConfig = { clientType: 'professional', location: 'es' };
-        let currentPayMethod = 'transfer';
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">⚡</span>
+        <span class="logo-text">FacturaRápida</span>
+        <span class="logo-badge">ES · 2026</span>
+      </div>
+      <nav class="header-nav">
+        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Cambiar tema">
+          <span class="theme-icon">☀️</span>
+        </button>
+      </nav>
+    </div>
+  </header>
 
-        // Init
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('date-emission').value = new Date().toISOString().split('T')[0];
-            addItem();
-            setPayMethod('transfer');
-            loadSession();
-            calculate();
-        });
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">✅ Sin registro · Sin coste · 100% Privado</div>
+      <h1 class="hero-title">Generador de Facturas Gratis<br><span class="hero-accent">para Autónomos</span></h1>
+      <p class="hero-subtitle">Crea tu factura profesional en segundos. Sin complicaciones.<br>Descarga en PDF al instante.</p>
+    </div>
+  </section>
 
-        function setSmartConfig(key, value) {
-            smartConfig[key] = value;
-            
-            // Visual feedback
-            const group = key === 'clientType' ? ['type-prof', 'type-part'] : ['loc-es', 'loc-ue', 'loc-ext'];
-            group.forEach(id => document.getElementById(id).classList.remove('active'));
-            const activeId = key === 'clientType' ? (value === 'professional' ? 'type-prof' : 'type-part') : (value === 'es' ? 'loc-es' : value === 'ue' ? 'loc-ue' : 'loc-ext');
-            document.getElementById(activeId).classList.add('active');
-            
-            calculate();
-        }
+  <!-- Main App -->
+  <main class="app-container" id="app">
 
-        function setPayMethod(m) {
-            currentPayMethod = m;
-            document.querySelectorAll('.pay-btn').forEach(b => b.classList.remove('active', 'border-blue-600', 'bg-blue-50', 'text-blue-600'));
-            
-            const btn = Array.from(document.querySelectorAll('.pay-btn')).find(b => b.innerText.toLowerCase().includes(m.toLowerCase().substring(0,3)));
-            btn.classList.add('active', 'border-blue-600', 'bg-blue-50', 'text-blue-600');
+    <!-- Left: Form -->
+    <section class="form-panel" aria-label="Formulario de factura">
 
-            const container = document.getElementById('pay-fields');
-            container.innerHTML = '';
-            
-            if(m === 'transfer') {
-                container.innerHTML = `<input type="text" id="pay-iban" placeholder="Introduce tu IBAN (ES00...)" class="w-full p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 border-none input-focus text-sm font-bold">`;
-            } else if(m === 'bizum') {
-                container.innerHTML = `<input type="text" id="pay-phone" placeholder="Tu número de teléfono Bizum" class="w-full p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 border-none input-focus text-sm font-bold">`;
-            } else {
-                container.innerHTML = `<p class="text-xs text-slate-500 italic">No se requieren datos adicionales para este método.</p>`;
-            }
-            updateSync();
-        }
+      <!-- Invoice Header Controls -->
+      <div class="form-row form-row--header">
+        <div class="field-group">
+          <label for="invoiceNumber">Nº Factura</label>
+          <input type="text" id="invoiceNumber" placeholder="FAC-2026-0001" autocomplete="off">
+        </div>
+        <div class="field-group">
+          <label for="invoiceDate">Fecha Emisión</label>
+          <input type="date" id="invoiceDate">
+        </div>
+        <div class="field-group">
+          <label for="dueDate">Vencimiento</label>
+          <input type="date" id="dueDate">
+        </div>
+      </div>
 
-        function addItem() {
-            items.push({ id: Date.now(), desc: "", qty: 1, price: 0 });
-            renderItems();
-            calculate();
-        }
+      <!-- Emisor -->
+      <fieldset class="form-section" id="sectionEmisor">
+        <legend class="section-legend">
+          <span class="legend-dot legend-dot--blue"></span>
+          Tu empresa / datos
+        </legend>
+        <div class="field-row">
+          <div class="field-group field-group--flex2">
+            <label for="emisorNombre">Nombre / Empresa *</label>
+            <input type="text" id="emisorNombre" placeholder="Juan García Martínez" autocomplete="organization">
+          </div>
+          <div class="field-group">
+            <label for="emisorNif">NIF / CIF *</label>
+            <input type="text" id="emisorNif" placeholder="12345678A" autocomplete="off" maxlength="12">
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="emisorDireccion">Dirección fiscal</label>
+          <input type="text" id="emisorDireccion" placeholder="Calle Mayor 1, 28001 Madrid" autocomplete="street-address">
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="emisorEmail">Email</label>
+            <input type="email" id="emisorEmail" placeholder="hola@tuempresa.es" autocomplete="email">
+          </div>
+          <div class="field-group">
+            <label for="emisorTelefono">Teléfono</label>
+            <input type="tel" id="emisorTelefono" placeholder="+34 600 000 000" autocomplete="tel">
+          </div>
+        </div>
+      </fieldset>
 
-        function updateItem(id, field, val) {
-            const item = items.find(i => i.id === id);
-            item[field] = field === 'desc' ? val : parseFloat(val) || 0;
-            calculate();
-        }
+      <!-- Cliente -->
+      <fieldset class="form-section" id="sectionCliente">
+        <legend class="section-legend">
+          <span class="legend-dot legend-dot--amber"></span>
+          Datos del cliente
+        </legend>
+        <div class="field-row">
+          <div class="field-group field-group--flex2">
+            <label for="clienteNombre">Nombre / Empresa *</label>
+            <input type="text" id="clienteNombre" placeholder="Empresa Receptora S.L." autocomplete="off">
+          </div>
+          <div class="field-group">
+            <label for="clienteNif">NIF / CIF</label>
+            <input type="text" id="clienteNif" placeholder="B12345678" autocomplete="off" maxlength="12">
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="clienteDireccion">Dirección</label>
+          <input type="text" id="clienteDireccion" placeholder="Av. Diagonal 123, 08001 Barcelona" autocomplete="off">
+        </div>
+        <div class="field-group">
+          <label for="clienteEmail">Email cliente</label>
+          <input type="email" id="clienteEmail" placeholder="cliente@empresa.es" autocomplete="off">
+        </div>
+      </fieldset>
 
-        function removeItem(id) {
-            items = items.filter(i => i.id !== id);
-            if(items.length === 0) addItem();
-            renderItems();
-            calculate();
-        }
+      <!-- Líneas -->
+      <fieldset class="form-section" id="sectionLineas">
+        <legend class="section-legend">
+          <span class="legend-dot legend-dot--green"></span>
+          Conceptos / Servicios
+        </legend>
+        <div class="lines-header">
+          <span>Descripción</span>
+          <span>Cant.</span>
+          <span>Precio u.</span>
+          <span>Total</span>
+          <span></span>
+        </div>
+        <div id="linesContainer">
+          <!-- Lines injected by JS -->
+        </div>
+        <button class="btn-add-line" onclick="addLine()" type="button">
+          <span>+</span> Añadir línea
+        </button>
+      </fieldset>
 
-        function renderItems() {
-            const list = document.getElementById('items-list');
-            list.innerHTML = '';
-            items.forEach(item => {
-                const div = document.createElement('div');
-                div.className = "flex gap-2 items-start group animate-fade-in";
-                div.innerHTML = `
-                    <div class="flex-1 space-y-2">
-                        <input type="text" value="${item.desc}" oninput="updateItem(${item.id}, 'desc', this.value)" placeholder="Descripción del servicio..." class="w-full p-3 bg-slate-50 dark:bg-slate-800 border-none rounded-xl text-xs font-medium input-focus">
-                        <div class="flex gap-2">
-                            <input type="number" value="${item.qty}" oninput="updateItem(${item.id}, 'qty', this.value)" placeholder="Cant." class="w-16 p-3 bg-slate-50 dark:bg-slate-800 border-none rounded-xl text-xs input-focus">
-                            <input type="number" value="${item.price}" oninput="updateItem(${item.id}, 'price', this.value)" placeholder="Precio €" class="flex-1 p-3 bg-slate-50 dark:bg-slate-800 border-none rounded-xl text-xs input-focus font-bold text-blue-600">
-                        </div>
-                    </div>
-                    <button onclick="removeItem(${item.id})" class="mt-2 p-2 text-slate-300 hover:text-rose-500 transition-colors">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                    </button>
-                `;
-                list.appendChild(div);
-            });
-        }
+      <!-- Fiscal -->
+      <fieldset class="form-section" id="sectionFiscal">
+        <legend class="section-legend">
+          <span class="legend-dot legend-dot--purple"></span>
+          Configuración fiscal
+        </legend>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="ivaType">Tipo de IVA</label>
+            <select id="ivaType">
+              <option value="21">IVA 21% (General)</option>
+              <option value="10">IVA 10% (Reducido)</option>
+              <option value="4">IVA 4% (Superreducido)</option>
+              <option value="0">IVA 0% (Exento)</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label for="irpfType">Retención IRPF</label>
+            <select id="irpfType">
+              <option value="0">Sin IRPF</option>
+              <option value="15">IRPF 15%</option>
+              <option value="7">IRPF 7% (nuevos)</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-group" id="exemptNoteGroup" style="display:none">
+          <label for="exemptNote">Nota de exención IVA</label>
+          <input type="text" id="exemptNote" placeholder="Exento de IVA según Art. 20 Ley 37/1992">
+        </div>
+      </fieldset>
 
-        function calculate() {
-            let subtotal = 0;
-            const tbody = document.getElementById('prev-items-body');
-            tbody.innerHTML = '';
+      <!-- Extras -->
+      <fieldset class="form-section" id="sectionExtras">
+        <legend class="section-legend">
+          <span class="legend-dot legend-dot--gray"></span>
+          Extras opcionales
+        </legend>
+        <div class="field-group">
+          <label for="paymentConditions">Condiciones de pago</label>
+          <input type="text" id="paymentConditions" placeholder="Transferencia bancaria en 30 días">
+        </div>
+        <div class="field-group">
+          <label for="bankAccount">IBAN / Cuenta bancaria</label>
+          <input type="text" id="bankAccount" placeholder="ES00 0000 0000 0000 0000 0000">
+        </div>
+        <div class="field-group">
+          <label for="invoiceNotes">Notas adicionales</label>
+          <textarea id="invoiceNotes" rows="2" placeholder="Cualquier información adicional para el cliente..."></textarea>
+        </div>
+      </fieldset>
 
-            items.forEach(item => {
-                const total = item.qty * item.price;
-                subtotal += total;
-                const tr = document.createElement('tr');
-                tr.className = "text-xs";
-                tr.innerHTML = `
-                    <td class="py-5 pr-4 font-extrabold text-slate-800">${item.desc || 'Servicio sin descripción'}</td>
-                    <td class="py-5 text-center text-slate-400 font-bold">${item.qty}</td>
-                    <td class="py-5 text-right text-slate-400 font-bold">${formatCurrency(item.price)}</td>
-                    <td class="py-5 text-right font-black text-slate-900">${formatCurrency(total)}</td>
-                `;
-                tbody.appendChild(tr);
-            });
+      <!-- Actions -->
+      <div class="form-actions">
+        <button class="btn btn--primary btn--large" onclick="printInvoice()" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Descargar PDF
+        </button>
+        <button class="btn btn--secondary" onclick="copyInvoice()" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copiar
+        </button>
+        <button class="btn btn--ghost" onclick="exportJSON()" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          JSON
+        </button>
+        <button class="btn btn--danger-ghost" onclick="resetForm()" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4"/></svg>
+          Reset
+        </button>
+      </div>
 
-            // LÓGICA FISCAL
-            let ivaRate = 21, irpfRate = 0;
-            let note = "", advice = "";
+    </section>
 
-            if(smartConfig.location !== 'es') {
-                ivaRate = 0;
-                note = smartConfig.location === 'ue' ? "Operación intracomunitaria sujeta a inversión del sujeto pasivo (Art. 25 LIVA)." : "Exportación de servicios exenta de IVA según Art. 21 LIVA.";
-                advice = "Perfecto. Al ser cliente internacional, he puesto el IVA al 0% automáticamente.";
-            } else {
-                note = "Impuesto sobre el Valor Añadido (21%) incluido según normativa vigente.";
-                advice = "Cliente nacional: Aplicando 21% de IVA estándar.";
-            }
+    <!-- Right: Preview -->
+    <aside class="preview-panel" aria-label="Vista previa de la factura">
+      <div class="preview-header">
+        <span class="preview-label">Vista previa</span>
+        <span class="preview-live-dot"></span>
+        <span class="preview-live-text">En tiempo real</span>
+      </div>
+      <div class="invoice-preview" id="invoicePreview">
+        <!-- Rendered by JS -->
+      </div>
+    </aside>
 
-            if(smartConfig.clientType === 'professional' && smartConfig.location === 'es') {
-                irpfRate = 15;
-                advice += " También aplico un 15% de IRPF al ser factura entre profesionales.";
-            } else {
-                irpfRate = 0;
-                advice += " Sin retención de IRPF en este caso.";
-            }
+  </main>
 
-            const ivaAmount = subtotal * (ivaRate / 100);
-            const irpfAmount = subtotal * (irpfRate / 100);
-            const total = subtotal + ivaAmount - irpfAmount;
+  <!-- Toast notification -->
+  <div class="toast" id="toast"></div>
 
-            document.getElementById('prev-subtotal').textContent = formatCurrency(subtotal);
-            document.getElementById('prev-tax-rows').innerHTML = `<div class="flex justify-between text-xs font-bold text-slate-400 uppercase tracking-widest"><span>IVA (${ivaRate}%)</span><span>${formatCurrency(ivaAmount)}</span></div>`;
-            
-            const irpfRow = document.getElementById('prev-irpf-row');
-            if(irpfRate > 0) {
-                irpfRow.classList.remove('hidden');
-                document.getElementById('prev-irpf-rate').textContent = irpfRate;
-                document.getElementById('prev-irpf-amount').textContent = "-" + formatCurrency(irpfAmount);
-            } else {
-                irpfRow.classList.add('hidden');
-            }
+  <!-- SEO Content + FAQ -->
+  <section class="seo-section">
+    <div class="seo-inner">
 
-            document.getElementById('prev-total').textContent = formatCurrency(total);
-            document.getElementById('prev-legal-note').textContent = note;
-            document.getElementById('advice-text').textContent = advice;
+      <div class="seo-intro">
+        <h2>El generador de facturas más rápido y privado para autónomos en España</h2>
+        <p>Si eres autónomo en España y necesitas crear una factura profesional en segundos, sin registrarte en ninguna plataforma y sin que tus datos salgan de tu dispositivo, has llegado al lugar correcto.</p>
+        <p>Nuestra herramienta genera facturas legalmente correctas según la normativa española vigente en 2026, con todos los campos obligatorios: número correlativo, fecha, NIF del emisor y receptor, base imponible, tipo de IVA, retención de IRPF y total.</p>
+      </div>
 
-            updateSync();
-            validate();
-            saveSession();
-        }
+      <div class="seo-guide">
+        <h3>¿Cómo crear una factura para autónomos en España?</h3>
+        <ol class="guide-steps">
+          <li><strong>Rellena tus datos:</strong> Introduce tu nombre o empresa, NIF y dirección fiscal en la sección "Tu empresa".</li>
+          <li><strong>Datos del cliente:</strong> Añade el nombre, NIF y dirección de tu cliente.</li>
+          <li><strong>Añade los conceptos:</strong> Describe el servicio o producto, la cantidad y el precio unitario. Puedes añadir múltiples líneas.</li>
+          <li><strong>Configura los impuestos:</strong> Selecciona el tipo de IVA (21%, 10%, 4% o exento) y si aplicas retención de IRPF (15% o 7% para nuevos autónomos).</li>
+          <li><strong>Descarga en PDF:</strong> Pulsa "Descargar PDF" y el navegador generará tu factura lista para enviar.</li>
+        </ol>
+      </div>
 
-        function updateSync() {
-            document.getElementById('prev-number').textContent = ("F-" + (new Date().getFullYear()) + "-" + (document.getElementById('em-nif').value.substring(0,2) || 'XX') + "-" + document.getElementById('inv-number').value).toUpperCase();
-            document.getElementById('prev-date').textContent = new Date().toLocaleDateString('es-ES');
-            document.getElementById('prev-em-name').textContent = document.getElementById('em-name').value || 'TU EMPRESA';
-            document.getElementById('prev-em-nif').textContent = 'NIF: ' + (document.getElementById('em-nif').value || '-');
-            document.getElementById('prev-cl-name').textContent = document.getElementById('cl-name').value || 'Nombre del Cliente';
-            document.getElementById('prev-cl-nif').textContent = 'NIF: ' + (document.getElementById('cl-nif').value || '-');
+      <div class="seo-example">
+        <h3>Ejemplo de factura de autónomo (España 2026)</h3>
+        <div class="example-table">
+          <table>
+            <thead>
+              <tr><th>Campo</th><th>Ejemplo</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Número</td><td>FAC-2026-0001</td></tr>
+              <tr><td>Emisor</td><td>Juan García · 12345678A</td></tr>
+              <tr><td>Cliente</td><td>Empresa Receptora S.L. · B87654321</td></tr>
+              <tr><td>Concepto</td><td>Diseño web – Mayo 2026</td></tr>
+              <tr><td>Base imponible</td><td>1.000,00 €</td></tr>
+              <tr><td>IVA 21%</td><td>+ 210,00 €</td></tr>
+              <tr><td>IRPF 15%</td><td>– 150,00 €</td></tr>
+              <tr><td><strong>Total</strong></td><td><strong>1.060,00 €</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
 
-            let payStr = currentPayMethod.toUpperCase() + ": ";
-            if(currentPayMethod === 'transfer') payStr += document.getElementById('pay-iban')?.value || 'IBAN NO INDICADO';
-            else if(currentPayMethod === 'bizum') payStr += document.getElementById('pay-phone')?.value || 'TELÉFONO NO INDICADO';
-            else payStr = currentPayMethod === 'card' ? "Pago con Tarjeta" : "Pago en Efectivo";
-            document.getElementById('prev-pay-info').textContent = payStr;
-        }
+      <!-- FAQ -->
+      <div class="faq-section">
+        <h3>Preguntas frecuentes</h3>
+        <div class="faq-list">
 
-        function validate() {
-            const checks = [
-                { id: 'v1', label: 'Tus datos (NIF)', val: document.getElementById('em-nif').value.length > 5 },
-                { id: 'v2', label: 'Nombre emisor', val: document.getElementById('em-name').value.length > 2 },
-                { id: 'v3', label: 'NIF Cliente', val: document.getElementById('cl-nif').value.length > 5 },
-                { id: 'v4', label: 'Importe > 0€', val: items.some(i => i.price > 0) }
-            ];
-            const container = document.getElementById('validation-checklist');
-            container.innerHTML = '';
-            checks.forEach(c => {
-                container.innerHTML += `
-                    <div class="flex items-center gap-3 p-3 rounded-2xl ${c.val ? 'bg-emerald-500/10 text-emerald-400' : 'bg-slate-800 text-slate-500'} transition-colors duration-500">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="${c.val ? 'M5 13l4 4L19 7' : 'M6 18L18 6M6 6l12 12'}"></path></svg>
-                        <span class="text-[10px] font-black uppercase tracking-widest">${c.label}</span>
-                    </div>
-                `;
-            });
-        }
+          <details class="faq-item">
+            <summary>¿Es realmente gratis? ¿Hay límites?</summary>
+            <p>Sí, es completamente gratuito y sin límites. Puedes crear tantas facturas como necesites. No hay versión premium ni suscripciones ocultas.</p>
+          </details>
 
-        function tryPrint() {
-            const missing = [];
-            if(!document.getElementById('em-nif').value) missing.push("Tu NIF");
-            if(!document.getElementById('cl-nif').value) missing.push("NIF del Cliente");
-            if(!items.some(i => i.price > 0)) missing.push("Precio en los conceptos");
+          <details class="faq-item">
+            <summary>¿Necesito registrarme o crear una cuenta?</summary>
+            <p>No. La herramienta funciona al 100% sin registro ni cuenta. Abre la página y genera tu factura de inmediato.</p>
+          </details>
 
-            if(missing.length > 0) {
-                document.getElementById('modal-error-list').innerHTML = "Faltan datos obligatorios para que la factura sea legal: <br><strong>" + missing.join(", ") + "</strong>";
-                document.getElementById('error-modal').classList.remove('hidden');
-                return;
-            }
-            window.print();
-        }
+          <details class="faq-item">
+            <summary>¿Mis datos se almacenan en algún servidor?</summary>
+            <p>No. Todos tus datos permanecen en tu navegador. Nada se envía a ningún servidor externo. Opcionalmente, puedes activar el guardado local para que tu navegador recuerde tus datos en el mismo dispositivo.</p>
+          </details>
 
-        function formatCurrency(v) { return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(v); }
+          <details class="faq-item">
+            <summary>¿Las facturas generadas son legales en España?</summary>
+            <p>Sí. La herramienta incluye todos los campos obligatorios según el Real Decreto 1619/2012: número correlativo, fecha, NIF del emisor y del receptor, base imponible, tipo impositivo de IVA, cuota de IVA y total. Recuerda también conservar una copia de cada factura emitida.</p>
+          </details>
 
-        function saveSession() {
-            const d = { em: document.getElementById('em-name').value, nif: document.getElementById('em-nif').value, iban: document.getElementById('pay-iban')?.value || '' };
-            localStorage.setItem('fpro_2026_pro', JSON.stringify(d));
-        }
+          <details class="faq-item">
+            <summary>¿Qué tipo de IVA debo aplicar?</summary>
+            <p>El IVA general es el 21% y aplica a la mayoría de servicios profesionales. El tipo reducido (10%) aplica a ciertos servicios (hostelería, transporte). El superreducido (4%) es para productos básicos de primera necesidad. Si tu actividad está exenta de IVA (enseñanza, sanidad...), selecciona 0% y añade la nota de exención correspondiente.</p>
+          </details>
 
-        function loadSession() {
-            const raw = localStorage.getItem('fpro_2026_pro');
-            if(raw) {
-                const d = JSON.parse(raw);
-                document.getElementById('em-name').value = d.em;
-                document.getElementById('em-nif').value = d.nif;
-                if(document.getElementById('pay-iban')) document.getElementById('pay-iban').value = d.iban;
-            }
-        }
+          <details class="faq-item">
+            <summary>¿Cuándo debo aplicar retención de IRPF?</summary>
+            <p>Si eres autónomo que presta servicios a empresas o profesionales, debes aplicar retención de IRPF (habitualmente el 15%). Si llevas menos de 2 años de alta como autónomo, puedes aplicar el 7% durante los primeros 3 años. Si tu cliente es particular o una empresa extranjera sin establecimiento en España, no aplicas retención.</p>
+          </details>
 
-        document.querySelectorAll('input, textarea').forEach(el => el.addEventListener('input', calculate));
-    </script>
+          <details class="faq-item">
+            <summary>¿Puedo usar esta herramienta en el móvil?</summary>
+            <p>Sí. La herramienta está diseñada para funcionar perfectamente en móvil, tablet y escritorio. El diseño se adapta a cualquier tamaño de pantalla.</p>
+          </details>
+
+          <details class="faq-item">
+            <summary>¿La herramienta funciona sin conexión a internet?</summary>
+            <p>Sí, una vez cargada la página, toda la funcionalidad opera offline. No necesitas conexión para generar ni descargar tus facturas.</p>
+          </details>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p class="footer-legal">Herramienta informativa. No constituye asesoramiento fiscal. Consulta con tu gestor para casos específicos.</p>
+      <p class="footer-copy">© 2026 FacturaRápida · Generador de facturas gratis para autónomos</p>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
 </body>
 </html>
