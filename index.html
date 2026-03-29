@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador de Facturas Profesional España 2026 | Legal & VeriFactu Ready</title>
-    <meta name="description" content="Crea facturas legales en España (2026). Soporta múltiples IVAs, facturas rectificativas, series correlativas y normativa AEAT. 100% privado.">
-    
+    <title>FacturaPro Smart | Asistente de Facturación 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -14,251 +12,252 @@
                 extend: {
                     fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
                     colors: {
-                        brand: { 50: '#f0f7ff', 100: '#e0effe', 600: '#2563eb', 700: '#1d4ed8', 800: '#1e40af' }
+                        brand: { 50: '#f8fafc', 100: '#f1f5f9', 600: '#0f172a', 700: '#334155' }
                     }
                 }
             }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         @media print {
             .no-print { display: none !important; }
-            body { background: white; }
-            #invoice-canvas {
-                box-shadow: none !important;
-                border: none !important;
-                width: 100% !important;
-                margin: 0 !important;
-                padding: 0 !important;
-            }
-            .page-break { page-break-before: always; }
+            body { background: white; margin: 0; }
+            #invoice-canvas { box-shadow: none !important; border: none !important; width: 100% !important; margin: 0 !important; padding: 1cm !important; }
         }
-        .input-focus { @apply focus:ring-2 focus:ring-brand-600 focus:border-transparent outline-none transition-all; }
+        .input-focus { @apply focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all; }
+        .step-card { @apply border-2 border-transparent transition-all cursor-pointer hover:border-blue-200; }
+        .step-card.active { @apply border-blue-500 bg-blue-50 dark:bg-blue-900/10; }
         input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased font-sans">
 
-    <!-- Header UI -->
-    <header class="no-print bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50">
+    <!-- Header -->
+    <header class="no-print bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50">
         <div class="max-w-[1400px] mx-auto px-4 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <div class="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center text-white font-bold">F</div>
-                <span class="font-bold text-lg tracking-tight">Factura<span class="text-brand-600">Pro</span> <span class="text-xs font-normal text-slate-500 ml-2">v2026.1</span></span>
-            </div>
-            <div class="flex items-center gap-4">
-                <div class="hidden md:flex items-center gap-2 text-xs font-medium text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20 px-3 py-1.5 rounded-full border border-emerald-100 dark:border-emerald-800">
-                    <span class="relative flex h-2 w-2">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                    </span>
-                    Procesamiento Local (Privado)
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-500/20">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                 </div>
-                <button onclick="window.print()" class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all shadow-sm flex items-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                    Generar PDF
-                </button>
+                <div>
+                    <span class="font-extrabold text-xl tracking-tight">Factura<span class="text-blue-600">Pro</span></span>
+                    <span class="block text-[10px] text-slate-500 font-medium uppercase tracking-widest leading-none">Smart Assistant v2.0</span>
+                </div>
             </div>
+            <button onclick="tryPrint()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg shadow-blue-600/30 flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                Descargar Factura
+            </button>
         </div>
     </header>
 
     <main class="max-w-[1400px] mx-auto p-4 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        <!-- Formulario Editor (no-print) -->
+        <!-- Panel de Control (Izquierda) -->
         <div class="no-print lg:col-span-5 space-y-6">
             
-            <!-- Tipo de Factura y Numeración -->
-            <section class="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800">
-                <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">Configuración Legal</h3>
-                <div class="grid grid-cols-1 gap-4">
+            <!-- 1. ASISTENTE INTELIGENTE -->
+            <section class="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-800">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 text-sm font-bold">1</span>
+                    <h2 class="font-bold text-lg">Configuración Inteligente</h2>
+                </div>
+
+                <div class="space-y-6">
+                    <!-- Pregunta 1: Perfil Cliente -->
                     <div>
-                        <label class="block text-xs font-semibold mb-1">Tipo de Documento</label>
-                        <select id="doc-type" onchange="updateUI()" class="w-full p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 input-focus text-sm">
-                            <option value="ordinaria">Factura Ordinaria</option>
-                            <option value="simplificada">Factura Simplificada (Ticket)</option>
-                            <option value="rectificativa">Factura Rectificativa</option>
-                        </select>
-                    </div>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-xs font-semibold mb-1 text-slate-500">Serie</label>
-                            <input type="text" id="inv-serie" placeholder="Ej: 2026" class="w-full p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 input-focus text-sm uppercase">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold mb-1 text-slate-500">Número Correlativo</label>
-                            <input type="number" id="inv-number" value="1" class="w-full p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 input-focus text-sm">
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">¿A quién facturas?</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div id="type-prof" onclick="setSmartConfig('clientType', 'professional')" class="step-card p-3 rounded-2xl bg-slate-50 dark:bg-slate-800 active">
+                                <p class="text-sm font-bold">Empresa / Autónomo</p>
+                                <p class="text-[10px] text-slate-500">Aplica IRPF si eres prof.</p>
+                            </div>
+                            <div id="type-part" onclick="setSmartConfig('clientType', 'individual')" class="step-card p-3 rounded-2xl bg-slate-50 dark:bg-slate-800">
+                                <p class="text-sm font-bold">Particular</p>
+                                <p class="text-[10px] text-slate-500">Sin retención IRPF</p>
+                            </div>
                         </div>
                     </div>
-                    <div id="rectificativa-fields" class="hidden p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-100 dark:border-amber-800 space-y-3">
-                        <input type="text" id="rect-ref" placeholder="Factura que rectifica (Nº)" class="w-full p-2 bg-white dark:bg-slate-900 border border-amber-200 rounded text-xs">
-                        <input type="text" id="rect-reason" placeholder="Motivo de la rectificación" class="w-full p-2 bg-white dark:bg-slate-900 border border-amber-200 rounded text-xs">
+
+                    <!-- Pregunta 2: Ubicación -->
+                    <div>
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">¿Dónde está el cliente?</p>
+                        <div class="grid grid-cols-3 gap-2">
+                            <div id="loc-es" onclick="setSmartConfig('location', 'es')" class="step-card p-3 rounded-2xl bg-slate-50 dark:bg-slate-800 text-center active">
+                                <p class="text-xs font-bold">España</p>
+                            </div>
+                            <div id="loc-ue" onclick="setSmartConfig('location', 'ue')" class="step-card p-3 rounded-2xl bg-slate-50 dark:bg-slate-800 text-center">
+                                <p class="text-xs font-bold">UE (VIES)</p>
+                            </div>
+                            <div id="loc-ext" onclick="setSmartConfig('location', 'ext')" class="step-card p-3 rounded-2xl bg-slate-50 dark:bg-slate-800 text-center">
+                                <p class="text-xs font-bold">Exportación</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recomendación Dinámica -->
+                    <div id="smart-advice" class="p-4 bg-amber-50 dark:bg-amber-900/20 rounded-2xl border border-amber-100 dark:border-amber-800 flex items-start gap-3">
+                        <svg class="w-5 h-5 text-amber-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <p class="text-xs text-amber-800 dark:text-amber-200 leading-relaxed" id="advice-text">
+                            Configuración estándar: Aplicando IVA 21% e IRPF 15%.
+                        </p>
                     </div>
                 </div>
             </section>
 
-            <!-- Fechas -->
-            <section class="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-xs font-semibold mb-1">Fecha Emisión</label>
-                    <input type="date" id="date-emission" class="w-full p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 input-focus text-sm">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold mb-1">Fecha Operación <span class="text-[10px] text-slate-400 font-normal">(Si es distinta)</span></label>
-                    <input type="date" id="date-operation" class="w-full p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 input-focus text-sm">
+            <!-- 2. DATOS DE LA FACTURA -->
+            <section class="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-800 space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Nº Factura</label>
+                        <div class="flex gap-1">
+                            <input type="text" id="inv-serie" placeholder="A-" class="w-16 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 input-focus text-sm uppercase font-bold">
+                            <input type="number" id="inv-number" value="1" class="flex-1 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 input-focus text-sm font-bold">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Fecha Emisión</label>
+                        <input type="date" id="date-emission" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 input-focus text-sm">
+                    </div>
                 </div>
             </section>
 
-            <!-- Datos Emisor / Receptor -->
+            <!-- 3. EMISOR Y RECEPTOR -->
             <div class="grid grid-cols-1 gap-6">
-                <section class="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800">
-                    <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">Emisor (Tus Datos)</h3>
+                <section class="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-100 dark:border-slate-800">
+                    <h3 class="text-xs font-bold text-slate-400 uppercase mb-4">Tus Datos (Emisor)</h3>
                     <div class="space-y-3">
-                        <input type="text" id="em-name" placeholder="Tu Nombre / Razón Social" class="w-full p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 input-focus text-sm">
-                        <input type="text" id="em-nif" placeholder="NIF / CIF" class="w-full p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 input-focus text-sm">
-                        <textarea id="em-address" placeholder="Dirección Fiscal completa" rows="2" class="w-full p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 input-focus text-sm resize-none"></textarea>
+                        <input type="text" id="em-name" placeholder="Nombre Comercial / Razón Social" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 input-focus text-sm">
+                        <input type="text" id="em-nif" placeholder="NIF / CIF" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 input-focus text-sm">
+                        <textarea id="em-address" placeholder="Dirección Fiscal" rows="2" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 input-focus text-sm resize-none"></textarea>
                     </div>
                 </section>
 
-                <section id="client-section" class="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800">
-                    <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">Cliente (Receptor)</h3>
+                <section class="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-100 dark:border-slate-800">
+                    <h3 class="text-xs font-bold text-slate-400 uppercase mb-4">Cliente (Receptor)</h3>
                     <div class="space-y-3">
-                        <input type="text" id="cl-name" placeholder="Nombre / Razón Social del Cliente" class="w-full p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 input-focus text-sm">
-                        <input type="text" id="cl-nif" placeholder="NIF / CIF / VAT ID" class="w-full p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 input-focus text-sm">
-                        <textarea id="cl-address" placeholder="Dirección del Cliente" rows="2" class="w-full p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 input-focus text-sm resize-none"></textarea>
+                        <input type="text" id="cl-name" placeholder="Nombre del Cliente" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 input-focus text-sm">
+                        <input type="text" id="cl-nif" placeholder="NIF del Cliente" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 input-focus text-sm">
                     </div>
                 </section>
             </div>
 
-            <!-- Conceptos Multi-IVA -->
-            <section class="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800">
+            <!-- 4. CONCEPTOS -->
+            <section class="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-100 dark:border-slate-800">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest">Conceptos y Servicios</h3>
-                    <button onclick="addItem()" class="text-brand-600 hover:text-brand-700 text-xs font-bold">+ AÑADIR LÍNEA</button>
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Servicios</h3>
+                    <button onclick="addItem()" class="text-blue-600 hover:text-blue-700 text-xs font-bold">+ AÑADIR LÍNEA</button>
                 </div>
-                <div id="items-list" class="space-y-4">
-                    <!-- Items dinámicos -->
-                </div>
-                
-                <div class="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800">
-                    <label class="block text-xs font-semibold mb-2">Retención IRPF Global</label>
-                    <select id="global-irpf" onchange="calculate()" class="w-full p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 input-focus text-sm">
-                        <option value="0">Sin retención IRPF</option>
-                        <option value="7">7% (Nuevos autónomos)</option>
-                        <option value="15" selected>15% (Profesionales general)</option>
-                    </select>
+                <div id="items-list" class="space-y-4 mb-6"></div>
+            </section>
+
+            <!-- 5. MÉTODO DE PAGO DINÁMICO -->
+            <section class="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-100 dark:border-slate-800 space-y-4">
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Método de Pago</h3>
+                <select id="pay-method" onchange="updatePayFields()" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 input-focus text-sm">
+                    <option value="transfer">Transferencia Bancaria</option>
+                    <option value="bizum">Bizum</option>
+                    <option value="card">Tarjeta de Crédito</option>
+                    <option value="cash">Efectivo</option>
+                </select>
+                <div id="pay-fields" class="space-y-3">
+                    <input type="text" id="pay-iban" placeholder="IBAN (ES00 0000...)" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 input-focus text-sm">
                 </div>
             </section>
 
-            <!-- Pago y Datos Bancarios -->
-            <section class="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 space-y-4">
-                <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest">Método de Pago</h3>
-                <div class="grid grid-cols-1 gap-3">
-                    <input type="text" id="bank-iban" placeholder="Número de Cuenta (IBAN)" class="w-full p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 input-focus text-sm">
-                    <input type="text" id="bank-swift" placeholder="SWIFT / BIC (Para pagos internacionales)" class="w-full p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 input-focus text-sm">
+            <!-- VALIDACIÓN PRE-VUELO -->
+            <section class="bg-slate-900 text-white p-6 rounded-3xl shadow-xl space-y-4">
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">¿Es correcta esta factura?</h3>
+                <div id="validation-checklist" class="space-y-2">
+                    <!-- Dinámico -->
                 </div>
             </section>
         </div>
 
-        <!-- Vista Previa / Canvas (Imprimible) -->
+        <!-- Vista Previa (Derecha) -->
         <div class="lg:col-span-7">
-            <div id="invoice-canvas" class="bg-white text-slate-900 p-[1.5cm] min-h-[29.7cm] shadow-2xl rounded-sm mx-auto overflow-hidden relative border border-slate-200">
+            <div id="invoice-canvas" class="bg-white text-slate-900 p-[1.5cm] min-h-[29.7cm] shadow-2xl rounded-sm mx-auto overflow-hidden relative border border-slate-100">
                 
                 <!-- Membrete -->
-                <div class="flex justify-between items-start mb-12">
-                    <div id="prev-doc-title-container">
-                        <h1 id="prev-doc-type" class="text-3xl font-black uppercase tracking-tighter text-slate-800">Factura</h1>
-                        <div class="mt-2 space-y-1 text-sm">
-                            <p class="font-bold text-slate-500">Nº Documento: <span id="prev-full-number" class="text-slate-900"></span></p>
-                            <p class="font-bold text-slate-500">Fecha Emisión: <span id="prev-date-em" class="text-slate-900"></span></p>
-                            <p id="prev-date-op-row" class="font-bold text-slate-500 hidden">Fecha Operación: <span id="prev-date-op" class="text-slate-900"></span></p>
+                <div class="flex justify-between items-start mb-16">
+                    <div>
+                        <h1 id="prev-doc-type" class="text-4xl font-black uppercase tracking-tighter text-slate-900 mb-2">Factura</h1>
+                        <div class="space-y-0.5">
+                            <p class="text-[10px] font-bold text-slate-400 uppercase">Nº Factura</p>
+                            <p id="prev-number" class="text-sm font-bold text-slate-800"></p>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase mt-2">Fecha Emisión</p>
+                            <p id="prev-date" class="text-sm font-bold text-slate-800"></p>
                         </div>
                     </div>
                     <div class="text-right">
-                        <div id="prev-em-name" class="text-xl font-bold uppercase tracking-tight">Tu Empresa S.L.</div>
-                        <div id="prev-em-nif" class="text-sm font-semibold text-slate-500">NIF: B12345678</div>
-                        <div id="prev-em-address" class="text-xs text-slate-400 mt-2 max-w-[250px] ml-auto whitespace-pre-line">Calle Ejemplo 123, 28001 Madrid</div>
+                        <div id="prev-em-name" class="text-xl font-extrabold uppercase tracking-tight">Tu Empresa</div>
+                        <div id="prev-em-nif" class="text-sm font-bold text-slate-500">NIF: -</div>
+                        <div id="prev-em-address" class="text-[10px] text-slate-400 mt-2 max-w-[200px] ml-auto leading-relaxed"></div>
                     </div>
-                </div>
-
-                <!-- Bloque Rectificativa Info -->
-                <div id="prev-rect-info" class="hidden mb-8 p-4 bg-slate-50 border-l-4 border-slate-800 text-xs">
-                    <p class="font-bold mb-1 italic text-slate-500">Documento Rectificativo:</p>
-                    <p>Rectifica a factura: <span id="prev-rect-ref" class="font-bold"></span></p>
-                    <p>Motivo: <span id="prev-rect-reason" class="font-bold"></span></p>
                 </div>
 
                 <!-- Bloque Cliente -->
-                <div class="grid grid-cols-2 gap-12 mb-12">
-                    <div id="prev-client-block">
-                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Cliente / Receptor</p>
-                        <div id="prev-cl-name" class="font-bold text-lg leading-tight">Nombre del Cliente</div>
-                        <div id="prev-cl-nif" class="text-sm font-semibold text-slate-500">NIF: B98765432</div>
-                        <div id="prev-cl-address" class="text-xs text-slate-400 mt-2 whitespace-pre-line">Dirección del cliente...</div>
+                <div class="grid grid-cols-2 gap-12 mb-16">
+                    <div>
+                        <p class="text-[9px] font-black uppercase tracking-[0.2em] text-blue-600 mb-3">Receptor</p>
+                        <div id="prev-cl-name" class="font-bold text-lg leading-tight mb-1">Nombre del Cliente</div>
+                        <div id="prev-cl-nif" class="text-sm font-bold text-slate-500 uppercase">NIF: -</div>
                     </div>
-                    <div class="flex flex-col justify-end">
-                        <!-- Espacio para QR VeriFactu (Obligatorio 2026) -->
-                        <div class="ml-auto flex flex-col items-center">
-                            <div class="w-24 h-24 bg-slate-100 border-2 border-slate-200 flex items-center justify-center text-[8px] text-slate-400 text-center px-2">
-                                [QR VERIFACTU REGLAMENTARIO]
+                    <div class="flex justify-end">
+                        <!-- QR VeriFactu Placeholder -->
+                        <div class="flex flex-col items-center">
+                            <div class="w-20 h-20 bg-slate-50 border border-slate-200 flex items-center justify-center text-[7px] text-slate-400 text-center px-2">
+                                [QR REGLAMENTARIO 2026]
                             </div>
-                            <span class="text-[8px] font-bold text-slate-400 mt-1 uppercase tracking-tighter">Sujeto a VeriFactu (AEAT)</span>
+                            <span class="text-[7px] font-bold text-slate-300 mt-1 uppercase tracking-tighter">Sujeto a VeriFactu (AEAT)</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Tabla de Conceptos -->
+                <!-- Tabla -->
                 <table class="w-full text-sm mb-12">
                     <thead>
-                        <tr class="border-b-2 border-slate-900 text-left">
-                            <th class="py-3 font-bold uppercase tracking-widest text-[10px]">Descripción / Concepto</th>
-                            <th class="py-3 font-bold uppercase tracking-widest text-[10px] text-center w-16">Cant.</th>
-                            <th class="py-3 font-bold uppercase tracking-widest text-[10px] text-right w-24">Precio</th>
-                            <th class="py-3 font-bold uppercase tracking-widest text-[10px] text-center w-16">IVA</th>
-                            <th class="py-3 font-bold uppercase tracking-widest text-[10px] text-right w-28">Total</th>
+                        <tr class="border-b-2 border-slate-900">
+                            <th class="py-4 font-bold uppercase tracking-widest text-[9px] text-left">Concepto</th>
+                            <th class="py-4 font-bold uppercase tracking-widest text-[9px] text-center w-16">Cant.</th>
+                            <th class="py-4 font-bold uppercase tracking-widest text-[9px] text-right w-24">Precio</th>
+                            <th class="py-4 font-bold uppercase tracking-widest text-[9px] text-right w-28">Total</th>
                         </tr>
                     </thead>
-                    <tbody id="prev-items-body" class="divide-y divide-slate-100">
-                        <!-- Filas inyectadas -->
-                    </tbody>
+                    <tbody id="prev-items-body" class="divide-y divide-slate-100"></tbody>
                 </table>
 
-                <!-- Desglose de Totales y Base Imponible -->
+                <!-- Totales -->
                 <div class="flex justify-end">
-                    <div class="w-full max-w-[300px] space-y-2">
-                        <div class="flex justify-between text-xs font-semibold text-slate-500">
+                    <div class="w-full max-w-[280px] space-y-3">
+                        <div class="flex justify-between text-xs font-bold text-slate-500 uppercase tracking-widest">
                             <span>Base Imponible</span>
                             <span id="prev-subtotal">0,00 €</span>
                         </div>
-                        <div id="prev-tax-rows" class="space-y-1">
-                            <!-- Filas dinámicas por cada tipo de IVA -->
-                        </div>
-                        <div id="prev-irpf-row" class="flex justify-between text-xs font-semibold text-rose-600">
+                        <div id="prev-tax-rows" class="space-y-2"></div>
+                        <div id="prev-irpf-row" class="flex justify-between text-xs font-bold text-rose-600 uppercase tracking-widest">
                             <span>Retención IRPF (<span id="prev-irpf-rate"></span>%)</span>
                             <span id="prev-irpf-amount">-0,00 €</span>
                         </div>
-                        <div class="flex justify-between pt-4 border-t-2 border-slate-900">
-                            <span class="font-black uppercase tracking-tighter text-xl">Total Factura</span>
-                            <span id="prev-total" class="font-black text-xl">0,00 €</span>
+                        <div class="flex justify-between pt-4 border-t-2 border-slate-900 items-baseline">
+                            <span class="font-black uppercase tracking-tighter text-2xl">Total</span>
+                            <span id="prev-total" class="font-black text-2xl text-blue-600">0,00 €</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Notas y Exenciones Legales -->
-                <div class="mt-12 space-y-4">
-                    <div id="prev-exemption-notices" class="p-3 bg-slate-50 rounded text-[10px] text-slate-500 font-medium italic border-l-2 border-slate-300 hidden">
-                        <!-- Inyectado automáticamente si IVA es 0% -->
-                    </div>
+                <!-- Footer Legal Factura -->
+                <div class="absolute bottom-12 left-[1.5cm] right-[1.5cm] space-y-8">
+                    <div id="prev-legal-note" class="p-4 bg-slate-50 rounded-xl text-[9px] text-slate-500 font-medium italic border-l-4 border-blue-500 leading-relaxed"></div>
                     
-                    <div class="grid grid-cols-2 gap-8 text-[10px]">
-                        <div>
-                            <p class="font-bold uppercase mb-1">Datos de Pago</p>
-                            <p class="text-slate-500">IBAN: <span id="prev-bank-iban" class="font-bold text-slate-800">-</span></p>
-                            <p id="prev-bank-swift-row" class="text-slate-500">SWIFT/BIC: <span id="prev-bank-swift" class="font-bold text-slate-800">-</span></p>
+                    <div class="flex justify-between items-end border-t border-slate-100 pt-8">
+                        <div class="text-[9px]">
+                            <p class="font-bold uppercase mb-1">Detalles de Pago</p>
+                            <p id="prev-pay-info" class="text-slate-600 font-bold uppercase"></p>
                         </div>
-                        <div class="text-right flex flex-col justify-end">
-                            <p class="text-slate-300 font-bold uppercase tracking-widest">Generado con FacturaPro</p>
+                        <div class="text-[9px] text-right">
+                            <p class="text-slate-400 font-bold uppercase tracking-widest italic">Diseño web por Flor Peña.</p>
                         </div>
                     </div>
                 </div>
@@ -267,254 +266,258 @@
         </div>
     </main>
 
+    <!-- Modal de Error -->
+    <div id="error-modal" class="fixed inset-0 bg-slate-950/50 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 p-8 rounded-3xl max-w-sm w-full shadow-2xl border border-slate-200 dark:border-slate-800 text-center">
+            <div class="w-16 h-16 bg-rose-100 dark:bg-rose-900/30 text-rose-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            </div>
+            <h3 class="text-xl font-bold mb-2">Faltan Datos Críticos</h3>
+            <p id="modal-error-list" class="text-sm text-slate-500 dark:text-slate-400 mb-6 leading-relaxed"></p>
+            <button onclick="document.getElementById('error-modal').classList.add('hidden')" class="w-full bg-slate-900 dark:bg-slate-100 dark:text-slate-900 text-white font-bold py-3 rounded-xl">Entendido</button>
+        </div>
+    </div>
+
     <script>
-        // State
-        let items = [{
-            id: Date.now(),
-            desc: "Servicio de consultoría profesional",
-            qty: 1,
-            price: 1000,
-            iva: 21
-        }];
+        // State Principal
+        let items = [{ id: Date.now(), desc: "Servicios profesionales", qty: 1, price: 0 }];
+        let smartConfig = {
+            clientType: 'professional',
+            location: 'es'
+        };
 
         // Init
         document.addEventListener('DOMContentLoaded', () => {
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('date-emission').value = today;
-            
-            // Load persistent emitter data
-            loadPersistence();
-            renderFormItems();
+            document.getElementById('date-emission').value = new Date().toISOString().split('T')[0];
+            addItem();
+            loadSession();
             calculate();
         });
 
+        function setSmartConfig(key, value) {
+            smartConfig[key] = value;
+            
+            // Visual feedback
+            const group = key === 'clientType' ? ['type-prof', 'type-part'] : ['loc-es', 'loc-ue', 'loc-ext'];
+            group.forEach(id => document.getElementById(id).classList.remove('active'));
+            document.getElementById(key === 'clientType' ? (value === 'professional' ? 'type-prof' : 'type-part') : (value === 'es' ? 'loc-es' : value === 'ue' ? 'loc-ue' : 'loc-ext')).classList.add('active');
+            
+            calculate();
+        }
+
         function addItem() {
-            items.push({ id: Date.now(), desc: "", qty: 1, price: 0, iva: 21 });
-            renderFormItems();
+            items.push({ id: Date.now(), desc: "", qty: 1, price: 0 });
+            renderItems();
+            calculate();
+        }
+
+        function updateItem(id, field, val) {
+            const item = items.find(i => i.id === id);
+            item[field] = field === 'desc' ? val : parseFloat(val) || 0;
             calculate();
         }
 
         function removeItem(id) {
             items = items.filter(i => i.id !== id);
             if(items.length === 0) addItem();
-            renderFormItems();
+            renderItems();
             calculate();
         }
 
-        function updateItem(id, field, value) {
-            const item = items.find(i => i.id === id);
-            if(item) {
-                item[field] = (field === 'desc') ? value : parseFloat(value) || 0;
-                calculate();
-            }
-        }
-
-        function renderFormItems() {
-            const container = document.getElementById('items-list');
-            container.innerHTML = '';
+        function renderItems() {
+            const list = document.getElementById('items-list');
+            list.innerHTML = '';
             items.forEach(item => {
                 const div = document.createElement('div');
-                div.className = "p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 space-y-3 relative group";
+                div.className = "flex gap-2 items-start group";
                 div.innerHTML = `
-                    <button onclick="removeItem(${item.id})" class="absolute top-2 right-2 text-slate-400 hover:text-rose-500 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                    </button>
-                    <input type="text" value="${item.desc}" oninput="updateItem(${item.id}, 'desc', this.value)" placeholder="Descripción del concepto" class="w-full p-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded text-xs input-focus">
-                    <div class="grid grid-cols-3 gap-2">
-                        <div>
-                            <label class="text-[10px] font-bold text-slate-400">CANT.</label>
-                            <input type="number" value="${item.qty}" oninput="updateItem(${item.id}, 'qty', this.value)" class="w-full p-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded text-xs input-focus">
-                        </div>
-                        <div>
-                            <label class="text-[10px] font-bold text-slate-400">PRECIO (€)</label>
-                            <input type="number" value="${item.price}" oninput="updateItem(${item.id}, 'price', this.value)" class="w-full p-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded text-xs input-focus">
-                        </div>
-                        <div>
-                            <label class="text-[10px] font-bold text-slate-400">IVA (%)</label>
-                            <select onchange="updateItem(${item.id}, 'iva', this.value)" class="w-full p-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded text-xs input-focus">
-                                <option value="21" ${item.iva == 21 ? 'selected' : ''}>21%</option>
-                                <option value="10" ${item.iva == 10 ? 'selected' : ''}>10%</option>
-                                <option value="4" ${item.iva == 4 ? 'selected' : ''}>4%</option>
-                                <option value="0" ${item.iva == 0 ? 'selected' : ''}>0% / Exento</option>
-                            </select>
+                    <div class="flex-1 space-y-2">
+                        <input type="text" value="${item.desc}" oninput="updateItem(${item.id}, 'desc', this.value)" placeholder="Descripción..." class="w-full p-2 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-lg text-xs input-focus">
+                        <div class="flex gap-2">
+                            <input type="number" value="${item.qty}" oninput="updateItem(${item.id}, 'qty', this.value)" placeholder="Cant." class="w-16 p-2 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-lg text-xs input-focus">
+                            <input type="number" value="${item.price}" oninput="updateItem(${item.id}, 'price', this.value)" placeholder="Precio €" class="flex-1 p-2 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-lg text-xs input-focus font-bold text-blue-600">
                         </div>
                     </div>
+                    <button onclick="removeItem(${item.id})" class="mt-1 p-2 text-slate-300 hover:text-rose-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
                 `;
-                container.appendChild(div);
+                list.appendChild(div);
             });
         }
 
         function calculate() {
             let subtotal = 0;
-            let taxGroups = {};
-            const irpfRate = parseFloat(document.getElementById('global-irpf').value);
-            
-            // Preview Table Clean
             const tbody = document.getElementById('prev-items-body');
             tbody.innerHTML = '';
 
             items.forEach(item => {
-                const lineBase = item.qty * item.price;
-                const lineIva = lineBase * (item.iva / 100);
-                const lineTotal = lineBase + lineIva;
-                
-                subtotal += lineBase;
-
-                // Group Taxes
-                if(!taxGroups[item.iva]) taxGroups[item.iva] = 0;
-                taxGroups[item.iva] += lineIva;
-
-                // Render Preview Row
+                const total = item.qty * item.price;
+                subtotal += total;
                 const tr = document.createElement('tr');
                 tr.className = "text-xs";
                 tr.innerHTML = `
-                    <td class="py-4 pr-4 font-medium text-slate-700">${item.desc || '[Sin descripción]'}</td>
-                    <td class="py-4 text-center text-slate-500">${item.qty}</td>
-                    <td class="py-4 text-right text-slate-500">${formatCurrency(item.price)}</td>
-                    <td class="py-4 text-center font-bold text-slate-400">${item.iva}%</td>
-                    <td class="py-4 text-right font-bold text-slate-900">${formatCurrency(lineTotal)}</td>
+                    <td class="py-4 pr-4 font-bold text-slate-800">${item.desc || 'Sin descripción'}</td>
+                    <td class="py-4 text-center text-slate-400 font-medium">${item.qty}</td>
+                    <td class="py-4 text-right text-slate-400 font-medium">${formatCurrency(item.price)}</td>
+                    <td class="py-4 text-right font-extrabold text-slate-900">${formatCurrency(total)}</td>
                 `;
                 tbody.appendChild(tr);
             });
 
-            // Summary UI
-            document.getElementById('prev-subtotal').textContent = formatCurrency(subtotal);
-            
-            const taxContainer = document.getElementById('prev-tax-rows');
-            taxContainer.innerHTML = '';
-            let totalTaxes = 0;
-            let hasZeroTax = false;
+            // LÓGICA FISCAL INTELIGENTE
+            let ivaRate = 21;
+            let irpfRate = 0;
+            let legalNote = "";
+            let advice = "";
 
-            Object.keys(taxGroups).forEach(rate => {
-                const amount = taxGroups[rate];
-                totalTaxes += amount;
-                if(parseFloat(rate) === 0) hasZeroTax = true;
+            // 1. IVA según ubicación
+            if(smartConfig.location !== 'es') {
+                ivaRate = 0;
+                legalNote = smartConfig.location === 'ue' 
+                    ? "Operación intracomunitaria sujeta a inversión del sujeto pasivo (Art. 25 LIVA)."
+                    : "Exportación de servicios exenta de IVA según Art. 21 de la Ley 37/1992.";
+                advice = "Factura sin IVA detectada (Internacional). ";
+            } else {
+                legalNote = "Sujeto a IVA general del 21%.";
+                advice = "Aplicando IVA estándar (España). ";
+            }
 
-                const div = document.createElement('div');
-                div.className = "flex justify-between text-xs font-semibold text-slate-500";
-                div.innerHTML = `<span>Cuota IVA (${rate}%)</span> <span>${formatCurrency(amount)}</span>`;
-                taxContainer.appendChild(div);
-            });
+            // 2. IRPF según tipo cliente
+            if(smartConfig.clientType === 'professional' && smartConfig.location === 'es') {
+                irpfRate = 15;
+                advice += "Retención IRPF (15%) aplicada al ser cliente profesional nacional.";
+            } else {
+                irpfRate = 0;
+                advice += "Sin retención IRPF (Cliente particular o extranjero).";
+            }
 
+            // Render Totales
+            const ivaAmount = subtotal * (ivaRate / 100);
             const irpfAmount = subtotal * (irpfRate / 100);
-            document.getElementById('prev-irpf-rate').textContent = irpfRate;
-            document.getElementById('prev-irpf-amount').textContent = "-" + formatCurrency(irpfAmount);
+            const total = subtotal + ivaAmount - irpfAmount;
+
+            document.getElementById('prev-subtotal').textContent = formatCurrency(subtotal);
+            document.getElementById('prev-tax-rows').innerHTML = `
+                <div class="flex justify-between text-xs font-bold text-slate-400 uppercase tracking-widest">
+                    <span>IVA (${ivaRate}%)</span>
+                    <span>${formatCurrency(ivaAmount)}</span>
+                </div>
+            `;
             
-            const total = subtotal + totalTaxes - irpfAmount;
+            const irpfRow = document.getElementById('prev-irpf-row');
+            if(irpfRate > 0) {
+                irpfRow.classList.remove('hidden');
+                document.getElementById('prev-irpf-rate').textContent = irpfRate;
+                document.getElementById('prev-irpf-amount').textContent = "-" + formatCurrency(irpfAmount);
+            } else {
+                irpfRow.classList.add('hidden');
+            }
+
             document.getElementById('prev-total').textContent = formatCurrency(total);
+            document.getElementById('prev-legal-note').textContent = legalNote;
+            document.getElementById('advice-text').textContent = advice;
 
-            // Legal Notices logic
-            const noticeBox = document.getElementById('prev-exemption-notices');
-            if(hasZeroTax) {
-                noticeBox.classList.remove('hidden');
-                noticeBox.innerHTML = `<strong>Nota Legal Exención:</strong> Operación sujeta a inversión del sujeto pasivo o exenta según Ley 37/1992 del IVA (Art. 20 / Art. 25 para intracomunitarios).`;
-            } else {
-                noticeBox.classList.add('hidden');
-            }
-
-            updateUI();
-            savePersistence();
+            updateSync();
+            validate();
+            saveSession();
         }
 
-        function updateUI() {
-            const type = document.getElementById('doc-type').value;
-            const serie = document.getElementById('inv-serie').value;
-            const num = document.getElementById('inv-number').value;
+        function updatePayFields() {
+            const method = document.getElementById('pay-method').value;
+            const container = document.getElementById('pay-fields');
+            container.innerHTML = '';
             
-            // Labels
-            const titles = { 
-                ordinaria: "Factura", 
-                simplificada: "Factura Simplificada", 
-                rectificativa: "Factura Rectificativa" 
-            };
-            document.getElementById('prev-doc-type').textContent = titles[type];
-            document.getElementById('prev-full-number').textContent = (serie ? serie + "-" : "") + num.toString().padStart(4, '0');
-
-            // Client visibility (Simplificada usually doesn't show full client data)
-            document.getElementById('client-section').style.display = (type === 'simplificada') ? 'none' : 'block';
-            document.getElementById('prev-client-block').style.opacity = (type === 'simplificada') ? '0' : '1';
-
-            // Rectificativa Fields
-            const rectFields = document.getElementById('rectificativa-fields');
-            const rectPrev = document.getElementById('prev-rect-info');
-            if(type === 'rectificativa') {
-                rectFields.classList.remove('hidden');
-                rectPrev.classList.remove('hidden');
-                document.getElementById('prev-rect-ref').textContent = document.getElementById('rect-ref').value;
-                document.getElementById('prev-rect-reason').textContent = document.getElementById('rect-reason').value;
-            } else {
-                rectFields.classList.add('hidden');
-                rectPrev.classList.add('hidden');
+            if(method === 'transfer') {
+                container.innerHTML = `<input type="text" id="pay-iban" oninput="updateSync()" placeholder="IBAN (ES00...)" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 input-focus text-sm">`;
+            } else if(method === 'bizum') {
+                container.innerHTML = `<input type="text" id="pay-phone" oninput="updateSync()" placeholder="Nº Teléfono Bizum" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 input-focus text-sm">`;
             }
+            updateSync();
+        }
 
-            // Dates
-            document.getElementById('prev-date-em').textContent = formatDate(document.getElementById('date-emission').value);
-            const dateOp = document.getElementById('date-operation').value;
-            const rowOp = document.getElementById('prev-date-op-row');
-            if(dateOp && dateOp !== document.getElementById('date-emission').value) {
-                rowOp.classList.remove('hidden');
-                document.getElementById('prev-date-op').textContent = formatDate(dateOp);
-            } else {
-                rowOp.classList.add('hidden');
-            }
+        function updateSync() {
+            // Text Sync
+            document.getElementById('prev-number').textContent = (document.getElementById('inv-serie').value + document.getElementById('inv-number').value).toUpperCase();
+            document.getElementById('prev-date').textContent = formatDate(document.getElementById('date-emission').value);
+            document.getElementById('prev-em-name').textContent = document.getElementById('em-name').value || 'Tu Empresa';
+            document.getElementById('prev-em-nif').textContent = 'NIF: ' + (document.getElementById('em-nif').value || '-');
+            document.getElementById('prev-em-address').textContent = document.getElementById('em-address').value;
+            document.getElementById('prev-cl-name').textContent = document.getElementById('cl-name').value || 'Cliente';
+            document.getElementById('prev-cl-nif').textContent = 'NIF: ' + (document.getElementById('cl-nif').value || '-');
 
-            // Sync text inputs
-            syncText('em-name', 'prev-em-name', 'Tu Empresa');
-            syncText('em-nif', 'prev-em-nif', 'NIF: -', 'NIF: ');
-            syncText('em-address', 'prev-em-address', '-');
-            syncText('cl-name', 'prev-cl-name', 'Cliente');
-            syncText('cl-nif', 'prev-cl-nif', 'NIF: -', 'NIF: ');
-            syncText('cl-address', 'prev-cl-address', '-');
-            syncText('bank-iban', 'prev-bank-iban', '-');
-            syncText('bank-swift', 'prev-bank-swift', '-');
+            // Pay Sync
+            const method = document.getElementById('pay-method').value;
+            let payStr = method.toUpperCase() + ": ";
+            if(method === 'transfer') payStr += document.getElementById('pay-iban')?.value || '-';
+            else if(method === 'bizum') payStr += document.getElementById('pay-phone')?.value || '-';
+            else if(method === 'card') payStr = "Pago con Tarjeta de Crédito";
+            else payStr = "Pago realizado en Efectivo";
+            document.getElementById('prev-pay-info').textContent = payStr;
+        }
+
+        function validate() {
+            const checks = [
+                { label: 'NIF Emisor', val: document.getElementById('em-nif').value },
+                { label: 'Nombre Emisor', val: document.getElementById('em-name').value },
+                { label: 'NIF Cliente', val: document.getElementById('cl-nif').value, opt: smartConfig.location !== 'es' },
+                { label: 'Conceptos', val: items.some(i => i.price > 0) }
+            ];
+
+            const container = document.getElementById('validation-checklist');
+            container.innerHTML = '';
             
-            document.getElementById('prev-bank-swift-row').style.display = document.getElementById('bank-swift').value ? 'block' : 'none';
+            checks.forEach(c => {
+                const isValid = c.val;
+                container.innerHTML += `
+                    <div class="flex items-center gap-2 text-[10px] ${isValid ? 'text-emerald-400' : 'text-slate-500'} font-bold uppercase">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="${isValid ? 'M5 13l4 4L19 7' : 'M6 18L18 6M6 6l12 12'}"></path></svg>
+                        ${c.label}
+                    </div>
+                `;
+            });
         }
 
-        function syncText(sourceId, targetId, fallback, prefix = "") {
-            const val = document.getElementById(sourceId).value;
-            document.getElementById(targetId).textContent = val ? prefix + val : fallback;
+        function tryPrint() {
+            const errors = [];
+            if(!document.getElementById('em-nif').value) errors.push("NIF del emisor");
+            if(!document.getElementById('em-name').value) errors.push("Nombre del emisor");
+            if(!document.getElementById('cl-nif').value && smartConfig.location === 'es') errors.push("NIF del cliente");
+            if(!items.some(i => i.price > 0)) errors.push("Al menos un concepto con precio");
+
+            if(errors.length > 0) {
+                document.getElementById('modal-error-list').innerHTML = "Para cumplir con la normativa, debes completar: <br><strong>" + errors.join(", ") + "</strong>";
+                document.getElementById('error-modal').classList.remove('hidden');
+                return;
+            }
+            window.print();
         }
 
-        function formatCurrency(val) {
-            return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(val);
-        }
+        function formatCurrency(v) { return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(v); }
+        function formatDate(d) { return d.split('-').reverse().join('/'); }
 
-        function formatDate(dateStr) {
-            if(!dateStr) return "-";
-            const [y, m, d] = dateStr.split("-");
-            return `${d}/${m}/${y}`;
-        }
-
-        // Persistence
-        function savePersistence() {
+        function saveSession() {
             const data = {
-                emName: document.getElementById('em-name').value,
-                emNif: document.getElementById('em-nif').value,
-                emAddress: document.getElementById('em-address').value,
-                bankIban: document.getElementById('bank-iban').value,
-                bankSwift: document.getElementById('bank-swift').value,
+                em: { name: document.getElementById('em-name').value, nif: document.getElementById('em-nif').value, addr: document.getElementById('em-address').value },
                 serie: document.getElementById('inv-serie').value,
-                lastNum: document.getElementById('inv-number').value
+                iban: document.getElementById('pay-iban')?.value || ''
             };
-            localStorage.setItem('facturaPro_config', JSON.stringify(data));
+            localStorage.setItem('fpro_2026_data', JSON.stringify(data));
         }
 
-        function loadPersistence() {
-            const saved = localStorage.getItem('facturaPro_config');
-            if(saved) {
-                const d = JSON.parse(saved);
-                document.getElementById('em-name').value = d.emName || '';
-                document.getElementById('em-nif').value = d.emNif || '';
-                document.getElementById('em-address').value = d.emAddress || '';
-                document.getElementById('bank-iban').value = d.bankIban || '';
-                document.getElementById('bank-swift').value = d.bankSwift || '';
-                document.getElementById('inv-serie').value = d.serie || '';
-                document.getElementById('inv-number').value = d.lastNum || '1';
+        function loadSession() {
+            const raw = localStorage.getItem('fpro_2026_data');
+            if(raw) {
+                const d = JSON.parse(raw);
+                document.getElementById('em-name').value = d.em.name;
+                document.getElementById('em-nif').value = d.em.nif;
+                document.getElementById('em-address').value = d.em.addr;
+                document.getElementById('inv-serie').value = d.serie;
+                if(document.getElementById('pay-iban')) document.getElementById('pay-iban').value = d.iban;
             }
         }
 
-        // Listeners for all inputs to trigger preview
+        // Listeners globales para sync inmediato
         document.querySelectorAll('input, select, textarea').forEach(el => {
             el.addEventListener('input', calculate);
         });
