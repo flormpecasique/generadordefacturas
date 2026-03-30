@@ -11,6 +11,10 @@
 Generador de facturas online **gratuito, legal y profesional**, pensado para autónomos en España.  
 Diseñado para ser **minimalista, intuitivo y eficiente**, inspirado en Notion, Stripe y Linear, pero con identidad propia.  
 
+Te damos la bienvenida al portapapeles de Gboard. Aquí se guardarán los textos que copies.
+
+⚠️ Proyecto en desarrollo. No usar como software de facturación oficial//
+
 - **Sin registro, sin servidor**: todo en el navegador, rápido y seguro.  
 - **100% legal España 2026**: cumple con Real Decreto 1619/2012.  
 - **Optimizado para SEO y social media**: para atraer tráfico orgánico de manera efectiva.  
