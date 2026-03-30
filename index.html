@@ -316,6 +316,22 @@
         </button>
       </div>
 
+      <!-- VERI*FACTU — Registro fiscal con hash SHA-256 encadenado (Camino B) -->
+      <div class="verifactu-block">
+        <div class="verifactu-block__header">
+          <span class="verifactu-tag">RD 1007/2023</span>
+          <span class="verifactu-title">Registro fiscal · Hash SHA-256 encadenado</span>
+        </div>
+        <p class="verifactu-desc">
+          Exporta el registro de facturación con huella SHA-256 encadenada según la estructura del Anexo II del RD 1007/2023. Útil como apoyo documental para tu gestor o asesor. <strong>No sustituye a un SIF homologado.</strong>
+        </p>
+        <button id="btnRegistroFiscal" class="btn btn--verifactu" onclick="exportarRegistroFiscal()" type="button">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Exportar registro fiscal (.json)
+        </button>
+        <p class="verifactu-chain-info" id="hashChainInfo"></p>
+      </div>
+
     </section>
 
     <!-- Right: Preview -->
@@ -334,6 +350,37 @@
 
   <!-- Toast notification -->
   <div class="toast" id="toast"></div>
+
+  <!-- VERI*FACTU — Aviso legal -->
+  <section class="verifactu-disclaimer" aria-label="Aviso sobre VERI*FACTU y RD 1007/2023">
+    <div class="verifactu-disclaimer__inner">
+      <div class="verifactu-disclaimer__icon">⚖️</div>
+      <div class="verifactu-disclaimer__content">
+        <h2 class="verifactu-disclaimer__title">Aviso sobre VERI*FACTU · RD 1007/2023</h2>
+        <p>Esta herramienta es un <strong>generador de borradores de factura</strong> de uso libre. <strong>No está homologada como Sistema Informático de Facturación (SIF)</strong> conforme al Real Decreto 1007/2023, de 5 de diciembre, que regula los requisitos de los Sistemas Informáticos de Facturación en España.</p>
+        <p>Si eres autónomo o empresa obligado a VERI*FACTU, <strong>debes usar un software certificado como sistema principal de facturación</strong>. Consulta con tu asesor fiscal o gestoría para elegir la solución adecuada.</p>
+        <div class="verifactu-disclaimer__features">
+          <div class="verifactu-disclaimer__feature verifactu-disclaimer__feature--ok">
+            <span class="feature-icon">✅</span>
+            <div>
+              <strong>Lo que sí ofrece esta herramienta</strong>
+              <p>Generación de borradores de factura en PDF · Exportación del registro con hash SHA-256 encadenado (estructura Anexo II RD 1007/2023) · Apoyo documental para tu gestor</p>
+            </div>
+          </div>
+          <div class="verifactu-disclaimer__feature verifactu-disclaimer__feature--no">
+            <span class="feature-icon">❌</span>
+            <div>
+              <strong>Lo que no ofrece (requiere SIF homologado)</strong>
+              <p>Firma electrónica de fabricante certificado · Envío a la API de la AEAT · Almacenamiento permanente e inmutable de la cadena · Declaración responsable de conformidad</p>
+            </div>
+          </div>
+        </div>
+        <p class="verifactu-disclaimer__link-text">
+          Más información oficial: <a href="https://www.agenciatributaria.es/AEAT.internet/Inicio/Ayuda/Manuales__Folletos_y_Videos/Manuales_de_ayuda_en_la_presentacion_de_declaraciones/Ejercicio_2024/Ayuda_Modelo_303/2__Facturacion_y_registro_contable/Veri_Factu/Veri_Factu.shtml" target="_blank" rel="noopener noreferrer">AEAT — VERI*FACTU</a>
+        </p>
+      </div>
+    </div>
+  </section>
 
   <!-- SEO Content + FAQ -->
   <section class="seo-section">
@@ -415,6 +462,11 @@
           <details class="faq-item">
             <summary>¿Puedo usar esta herramienta en el móvil?</summary>
             <p>Sí. La herramienta está diseñada para funcionar perfectamente en móvil, tablet y escritorio. El diseño se adapta a cualquier tamaño de pantalla y la descarga de PDF funciona en iOS y Android.</p>
+          </details>
+
+          <details class="faq-item">
+            <summary>¿Cumple con VERI*FACTU y el RD 1007/2023?</summary>
+            <p>No de forma completa. Esta herramienta es un generador de borradores, no un Sistema Informático de Facturación (SIF) homologado. Lo que sí incluye es la exportación del registro de facturación con hash SHA-256 encadenado según la estructura del Anexo II del RD 1007/2023, útil como apoyo documental para tu asesor. Si estás obligado a VERI*FACTU como sistema principal, consulta con tu gestor para elegir el software certificado adecuado a tu actividad.</p>
           </details>
 
           <details class="faq-item">

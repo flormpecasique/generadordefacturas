@@ -15,6 +15,168 @@ let state = {
 };
 
 // =============================================
+// VERI*FACTU — REGISTRO FISCAL (Camino B)
+// Hash SHA-256 encadenado según RD 1007/2023
+// Anexo II. NO es un SIF homologado.
+// =============================================
+
+/** SHA-256 de un string → hex MAYÚSCULAS (Web Crypto API nativa) */
+async function sha256hex(message) {
+  const data = new TextEncoder().encode(message);
+  const buf  = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(buf))
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('').toUpperCase();
+}
+
+/**
+ * Cadena de campos para la huella del registro (Anexo II RD 1007/2023):
+ * NIF_EMISOR|NUM_SERIE|FECHA_EXPEDICION|TIPO_FACTURA|CUOTA_TOTAL|IMPORTE_TOTAL
+ */
+function buildHashInput(f) {
+  return [f.nifEmisor, f.numSerie, f.fechaExpedicion,
+          f.tipoFactura, f.cuotaTotal.toFixed(2), f.importeTotal.toFixed(2)].join('|');
+}
+
+/**
+ * Cadena de encadenamiento con factura anterior:
+ * HASH_ANTERIOR|NIF_EMISOR|NUM_SERIE|FECHA_EXPEDICION|IMPORTE_TOTAL
+ */
+function buildEncadenamientoInput(hashAnterior, f) {
+  return [hashAnterior, f.nifEmisor, f.numSerie,
+          f.fechaExpedicion, f.importeTotal.toFixed(2)].join('|');
+}
+
+/** Lee el último hash guardado (localStorage o sessionStorage) */
+function getLastHash() {
+  const key = 'factura_last_hash';
+  return state.storageEnabled
+    ? (localStorage.getItem(key) || '')
+    : (sessionStorage.getItem(key + '_session') || '');
+}
+
+/** Persiste el hash generado para encadenar la siguiente factura */
+function saveLastHash(hash) {
+  const key = 'factura_last_hash';
+  state.storageEnabled
+    ? localStorage.setItem(key, hash)
+    : sessionStorage.setItem(key + '_session', hash);
+}
+
+/** Genera el registro de facturación completo con hash encadenado */
+async function generarRegistroFiscal() {
+  const { base, iva, irpf, total } = calculateTotals();
+  const ivaRate  = parseFloat(val('ivaType'));
+  const irpfRate = parseFloat(val('irpfType'));
+  const ahora    = new Date();
+
+  const factura = {
+    nifEmisor:       val('emisorNif') || 'NO-INFORMADO',
+    numSerie:        val('invoiceNumber') || 'FAC-0001',
+    fechaExpedicion: val('invoiceDate') || ahora.toISOString().split('T')[0],
+    tipoFactura:     'F1',   // Factura completa
+    cuotaTotal:      iva,
+    importeTotal:    total,
+  };
+
+  const huella          = await sha256hex(buildHashInput(factura));
+  const hashAnterior    = getLastHash();
+  const hashEncadenado  = await sha256hex(buildEncadenamientoInput(hashAnterior, factura));
+
+  const registro = {
+    _aviso: 'Registro generado con fines de apoyo al contribuyente. ' +
+            'No constituye un SIF homologado conforme al RD 1007/2023. ' +
+            'Consulte con su asesor fiscal.',
+    _normativa: 'RD 1007/2023 — Estructura Anexo II (simplificada, sin firma de fabricante)',
+    IDFactura: {
+      IDEmisorFactura:        factura.nifEmisor,
+      NumSerieFactura:        factura.numSerie,
+      FechaExpedicionFactura: factura.fechaExpedicion,
+    },
+    TipoFactura:         factura.tipoFactura,
+    DescripcionOperacion: state.lines.filter(l => l.description)
+      .map(l => l.description).join(' | ') || 'Servicios profesionales',
+    ImporteTotal:  parseFloat(total.toFixed(2)),
+    Desglose: {
+      BaseImponible:    parseFloat(base.toFixed(2)),
+      TipoImpositivo:   ivaRate,
+      CuotaRepercutida: parseFloat(iva.toFixed(2)),
+      ...(irpfRate > 0 && {
+        RetencionIRPF: parseFloat(irpf.toFixed(2)),
+        TipoRetencion: irpfRate,
+      }),
+    },
+    Encadenamiento: {
+      PrimerRegistro: hashAnterior === '' ? 'S' : 'N',
+      ...(hashAnterior !== '' && {
+        EncadenamientoAnterior: { HuellaAnterior: hashAnterior },
+      }),
+    },
+    SistemaInformatico: {
+      NombreSistema:    'FacturaRápida (herramienta de apoyo)',
+      Version:          '1.0',
+      NumeroInstalacion: 'CLIENT-SIDE',
+      TipoUsoPosibleSoloVerifactu: 'N',
+      TipoUsoPosibleMultiOT:       'N',
+    },
+    FechaHoraHusoGenRegistro: ahora.toISOString(),
+    HuellaSistema:      huella,
+    HashEncadenamiento: hashEncadenado,
+    _inputHashGenerado:   buildHashInput(factura),
+    _inputEncadenamiento: buildEncadenamientoInput(hashAnterior, factura),
+  };
+
+  return { registro, huella };
+}
+
+/** Exporta el registro fiscal como .json y actualiza la cadena */
+async function exportarRegistroFiscal() {
+  if (!val('invoiceNumber') || !val('emisorNif')) {
+    showToast('⚠️ Rellena el Nº de factura y tu NIF antes de exportar');
+    return;
+  }
+
+  const btn = document.getElementById('btnRegistroFiscal');
+  if (btn) { btn.disabled = true; btn.style.opacity = '0.6'; }
+
+  try {
+    showToast('⏳ Calculando hash SHA-256…');
+    const { registro, huella } = await generarRegistroFiscal();
+
+    const blob = new Blob([JSON.stringify(registro, null, 2)], { type: 'application/json' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = `registro-fiscal_${val('invoiceNumber').replace(/[^a-zA-Z0-9\-_]/g, '_')}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+
+    saveLastHash(huella);
+    updateHashChainInfo();
+    showToast('✅ Registro fiscal exportado y cadena actualizada');
+  } catch (err) {
+    console.error('Error registro fiscal:', err);
+    showToast('❌ Error al generar el registro. Revisa los datos.');
+  } finally {
+    if (btn) { btn.disabled = false; btn.style.opacity = '1'; }
+  }
+}
+
+/** Muestra el estado del encadenamiento bajo el botón */
+function updateHashChainInfo() {
+  const el = document.getElementById('hashChainInfo');
+  if (!el) return;
+  const last = getLastHash();
+  if (last) {
+    const short = last.substring(0, 12) + '…' + last.substring(last.length - 8);
+    el.innerHTML = `🔗 Encadenado · hash anterior: <code title="${last}">${short}</code>`;
+  } else {
+    el.textContent = '🔗 Primera factura de la serie · sin encadenamiento previo';
+  }
+  el.style.display = 'block';
+}
+
+// =============================================
 // INIT
 // =============================================
 document.addEventListener('DOMContentLoaded', () => {
@@ -26,6 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
   bindFiscalSelects();
   loadSavedData();
   updatePreview();
+  updateHashChainInfo();
 });
 
 // =============================================
