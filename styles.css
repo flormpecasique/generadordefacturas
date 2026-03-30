@@ -668,13 +668,11 @@ textarea { resize: vertical; min-height: 64px; }
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 32px;
-  padding-bottom: 32px;        /* era 24px — más distancia al borde */
+  padding-bottom: 24px;
   border-bottom: 2px solid var(--border);
 }
 
-.inv-brand {
-  padding-bottom: 6px;         /* separa el último texto del borde inferior */
-}
+.inv-brand {}
 .inv-brand-name {
   font-size: 1.4rem;
   font-weight: 700;
@@ -687,8 +685,6 @@ textarea { resize: vertical; min-height: 64px; }
   font-size: 0.78rem;
   color: var(--text-muted);
   font-family: var(--font-mono);
-  margin-top: 3px;             /* separa cada línea de detalle entre sí */
-  line-height: 1.5;
 }
 .inv-brand-address {
   font-size: 0.78rem;
@@ -1055,6 +1051,263 @@ textarea { resize: vertical; min-height: 64px; }
   line-height: 1.7;
   border-top: 1px solid var(--border);
   padding-top: var(--sp-4);
+}
+
+/* =============================================
+   13b. VERI*FACTU — BLOQUE EN FORMULARIO
+   ============================================= */
+.verifactu-block {
+  background: var(--bg-surface);
+  border: 1.5px solid #d97706;
+  border-radius: var(--radius-lg);
+  padding: var(--sp-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+[data-theme="dark"] .verifactu-block {
+  border-color: #f59e0b;
+  background: rgba(245, 158, 11, 0.04);
+}
+
+.verifactu-block__header {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+
+.verifactu-tag {
+  background: #fef3c7;
+  color: #92400e;
+  border-radius: 100px;
+  padding: 2px 10px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  flex-shrink: 0;
+}
+
+[data-theme="dark"] .verifactu-tag {
+  background: rgba(245, 158, 11, 0.18);
+  color: #f59e0b;
+}
+
+.verifactu-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.verifactu-desc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.verifactu-desc strong { color: var(--text-primary); }
+
+.btn--verifactu {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #fef3c7;
+  color: #92400e;
+  border: 1.5px solid #d97706;
+  border-radius: var(--radius-sm);
+  padding: 9px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: all var(--t-fast);
+  align-self: flex-start;
+}
+
+.btn--verifactu:hover {
+  background: #d97706;
+  color: #fff;
+  border-color: #d97706;
+}
+
+.btn--verifactu:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+[data-theme="dark"] .btn--verifactu {
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+  border-color: #f59e0b;
+}
+
+[data-theme="dark"] .btn--verifactu:hover {
+  background: #f59e0b;
+  color: #000;
+}
+
+.verifactu-chain-info {
+  display: none;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  line-height: 1.5;
+}
+
+.verifactu-chain-info code {
+  background: var(--bg-surface-3);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 0.72rem;
+  color: #d97706;
+}
+
+[data-theme="dark"] .verifactu-chain-info code {
+  color: #f59e0b;
+}
+
+/* =============================================
+   13c. VERI*FACTU — SECCIÓN DISCLAIMER
+   ============================================= */
+.verifactu-disclaimer {
+  background: #fffbeb;
+  border-top: 1px solid #fde68a;
+  border-bottom: 1px solid #fde68a;
+  padding: var(--sp-10) var(--sp-6);
+}
+
+[data-theme="dark"] .verifactu-disclaimer {
+  background: rgba(245, 158, 11, 0.04);
+  border-color: rgba(245, 158, 11, 0.18);
+}
+
+.verifactu-disclaimer__inner {
+  max-width: 860px;
+  margin: 0 auto;
+  display: flex;
+  gap: var(--sp-5);
+  align-items: flex-start;
+}
+
+.verifactu-disclaimer__icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.verifactu-disclaimer__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.verifactu-disclaimer__title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #92400e;
+  letter-spacing: -0.015em;
+}
+
+[data-theme="dark"] .verifactu-disclaimer__title {
+  color: #f59e0b;
+}
+
+.verifactu-disclaimer__content > p {
+  font-size: 0.88rem;
+  color: #78350f;
+  line-height: 1.7;
+}
+
+[data-theme="dark"] .verifactu-disclaimer__content > p {
+  color: #fcd34d;
+}
+
+.verifactu-disclaimer__content > p strong {
+  color: #451a03;
+}
+
+[data-theme="dark"] .verifactu-disclaimer__content > p strong {
+  color: #fbbf24;
+}
+
+.verifactu-disclaimer__features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-4);
+  margin-top: var(--sp-1);
+}
+
+.verifactu-disclaimer__feature {
+  display: flex;
+  gap: var(--sp-3);
+  align-items: flex-start;
+  background: rgba(255, 255, 255, 0.65);
+  border-radius: var(--radius-md);
+  padding: var(--sp-4);
+  border: 1px solid #fde68a;
+}
+
+[data-theme="dark"] .verifactu-disclaimer__feature {
+  background: rgba(0, 0, 0, 0.2);
+  border-color: rgba(245, 158, 11, 0.15);
+}
+
+.feature-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.verifactu-disclaimer__feature strong {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #451a03;
+  margin-bottom: 4px;
+}
+
+[data-theme="dark"] .verifactu-disclaimer__feature strong {
+  color: #fbbf24;
+}
+
+.verifactu-disclaimer__feature p {
+  font-size: 0.78rem;
+  color: #78350f;
+  line-height: 1.5;
+  margin: 0;
+}
+
+[data-theme="dark"] .verifactu-disclaimer__feature p {
+  color: #fcd34d;
+}
+
+.verifactu-disclaimer__link-text {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.verifactu-disclaimer__link-text a {
+  color: #d97706;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.verifactu-disclaimer__link-text a:hover {
+  color: #92400e;
+  text-decoration: underline;
+}
+
+@media (max-width: 680px) {
+  .verifactu-disclaimer__inner {
+    flex-direction: column;
+  }
+
+  .verifactu-disclaimer__features {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* =============================================
