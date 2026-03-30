@@ -447,117 +447,94 @@ function updatePreview() {
 }
 
 // =============================================
-// PRINT / PDF
+// PRINT / PDF — Mobile-compatible via html2canvas + jsPDF
 // =============================================
-function printInvoice() {
-  // Increment the invoice number for next invoice after printing
-  const currentNumber = val('invoiceNumber');
-
-  // Open a new window with just the invoice for clean PDF
+async function printInvoice() {
   const invoiceDoc = document.getElementById('invoiceDocument');
   if (!invoiceDoc) {
-    showToast('⚠️ Rellena la factura antes de imprimir');
+    showToast('⚠️ Rellena la factura antes de descargar');
     return;
   }
 
-  const styles = document.querySelector('link[rel="stylesheet"]');
-  const stylesHref = styles ? styles.href : 'styles.css';
+  // Check libraries are loaded
+  if (typeof html2canvas === 'undefined' || typeof window.jspdf === 'undefined') {
+    showToast('⏳ Cargando librerías… inténtalo de nuevo');
+    return;
+  }
 
-  const printWindow = window.open('', '_blank', 'width=900,height=700');
-  printWindow.document.write(`
-    <!DOCTYPE html>
-    <html lang="es" data-theme="light">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Factura ${escapeHtml(val('invoiceNumber'))}</title>
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
-      <style>
-        :root {
-          --font-sans: 'Outfit', Helvetica, sans-serif;
-          --font-mono: 'DM Mono', 'Courier New', monospace;
-          --bg-surface: #fff;
-          --bg-surface-2: #f8f8f6;
-          --bg-surface-3: #f0efeb;
-          --border: #e2e0d9;
-          --text-primary: #111;
-          --text-secondary: #555;
-          --text-muted: #888;
-          --accent: #1a56db;
-          --green: #059669;
-          --red: #dc2626;
-          --amber: #d97706;
+  // Disable button to prevent double-click
+  const btn = document.querySelector('.btn--primary');
+  if (btn) { btn.disabled = true; btn.style.opacity = '0.6'; }
+
+  showToast('⏳ Generando PDF…');
+
+  try {
+    // Render the invoice with forced light theme + fixed width for consistent output
+    const canvas = await html2canvas(invoiceDoc, {
+      scale: 2,
+      useCORS: true,
+      allowTaint: false,
+      backgroundColor: '#ffffff',
+      logging: false,
+      width: invoiceDoc.scrollWidth,
+      height: invoiceDoc.scrollHeight,
+      onclone: (clonedDoc) => {
+        // Force light theme on the clone so dark-mode users get a white PDF
+        clonedDoc.documentElement.setAttribute('data-theme', 'light');
+        // Ensure the cloned invoice document has white background
+        const clonedInvoice = clonedDoc.getElementById('invoiceDocument');
+        if (clonedInvoice) {
+          clonedInvoice.style.background = '#ffffff';
+          clonedInvoice.style.color = '#111111';
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-          font-family: var(--font-sans);
-          color: var(--text-primary);
-          background: #fff;
-          padding: 0;
-        }
-        .inv-document {
-          padding: 16mm 18mm;
-          max-width: 210mm;
-          margin: 0 auto;
-        }
-        .inv-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-start;
-          margin-bottom: 28px;
-          padding-bottom: 20px;
-          border-bottom: 2px solid var(--border);
-        }
-        .inv-brand-name { font-size: 1.3rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 5px; }
-        .inv-brand-nif, .inv-brand-address { font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono); margin-top: 2px; max-width: 220px; line-height: 1.4; }
-        .inv-meta { text-align: right; }
-        .inv-title { font-size: 1.7rem; font-weight: 700; letter-spacing: -0.03em; color: var(--accent); margin-bottom: 6px; }
-        .inv-number { font-family: var(--font-mono); font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 3px; }
-        .inv-date { font-size: 0.77rem; color: var(--text-muted); font-family: var(--font-mono); }
-        .inv-parties { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
-        .inv-party-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 5px; }
-        .inv-party-name { font-size: 0.9rem; font-weight: 600; margin-bottom: 2px; }
-        .inv-party-detail { font-size: 0.75rem; color: var(--text-secondary); font-family: var(--font-mono); line-height: 1.4; }
-        table { width: 100%; border-collapse: collapse; margin-bottom: 18px; font-size: 0.82rem; }
-        thead tr { background: var(--bg-surface-3); }
-        th { padding: 7px 9px; text-align: left; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); border-bottom: 1px solid var(--border); }
-        th:nth-child(2), th:nth-child(3), th:nth-child(4), td:nth-child(2), td:nth-child(3), td:nth-child(4) { text-align: right; }
-        td { padding: 8px 9px; border-bottom: 1px solid var(--border); color: var(--text-primary); vertical-align: top; }
-        td:nth-child(2), td:nth-child(3), td:nth-child(4) { font-family: var(--font-mono); color: var(--text-secondary); white-space: nowrap; }
-        tr:last-child td { border-bottom: 2px solid var(--border); }
-        .inv-totals { display: flex; justify-content: flex-end; margin-bottom: 20px; }
-        .inv-totals-table { min-width: 210px; }
-        .inv-totals-row { display: flex; justify-content: space-between; gap: 28px; padding: 4px 0; font-size: 0.82rem; color: var(--text-secondary); }
-        .inv-totals-row span:last-child { font-family: var(--font-mono); font-weight: 500; color: var(--text-primary); min-width: 90px; text-align: right; }
-        .inv-totals-row--irpf span:last-child { color: var(--red); }
-        .inv-totals-row--iva span:last-child { color: var(--green); }
-        .inv-totals-divider { height: 1px; background: var(--border); margin: 5px 0; }
-        .inv-totals-row--total { font-size: 1rem; font-weight: 700; padding: 7px 0 3px; }
-        .inv-totals-row--total span:last-child { color: var(--accent); font-size: 1.1rem; font-weight: 700; }
-        .inv-footer { border-top: 1px solid var(--border); padding-top: 14px; font-size: 0.72rem; color: var(--text-muted); line-height: 1.6; display: flex; flex-direction: column; gap: 5px; }
-        .inv-footer-row { display: flex; gap: 6px; }
-        .inv-footer-row strong { color: var(--text-secondary); white-space: nowrap; font-weight: 600; }
-        .inv-exempt-note { color: var(--amber); font-size: 0.72rem; font-style: italic; }
-        @media print {
-          * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-          body { background: #fff; }
-        }
-      </style>
-    </head>
-    <body>
-      ${invoiceDoc.outerHTML}
-      <script>
-        window.onload = function() {
-          setTimeout(function() { window.print(); }, 600);
-        };
-      <\/script>
-    </body>
-    </html>
-  `);
-  printWindow.document.close();
-  showToast('🖨️ Preparando PDF...');
+      }
+    });
+
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'a4',
+      compress: true
+    });
+
+    const pageW = pdf.internal.pageSize.getWidth();   // 210mm
+    const pageH = pdf.internal.pageSize.getHeight();  // 297mm
+    const margin = 10; // mm
+    const usableW = pageW - margin * 2; // 190mm
+    const usableH = pageH - margin * 2; // 277mm
+
+    // Calculate image dimensions preserving aspect ratio
+    const aspectRatio = canvas.width / canvas.height;
+    let imgW = usableW;
+    let imgH = imgW / aspectRatio;
+
+    // If taller than one page, scale down to fit
+    if (imgH > usableH) {
+      imgH = usableH;
+      imgW = imgH * aspectRatio;
+    }
+
+    // Center horizontally if narrower than page
+    const xOffset = margin + (usableW - imgW) / 2;
+
+    const imgData = canvas.toDataURL('image/jpeg', 0.95);
+    pdf.addImage(imgData, 'JPEG', xOffset, margin, imgW, imgH);
+
+    // Safe filename (remove special chars)
+    const rawNumber = val('invoiceNumber') || 'factura';
+    const filename = rawNumber.replace(/[^a-zA-Z0-9\-_]/g, '_') + '.pdf';
+
+    pdf.save(filename);
+    showToast('✅ PDF descargado correctamente');
+
+  } catch (err) {
+    console.error('PDF generation error:', err);
+    showToast('❌ Error al generar el PDF. Recarga la página.');
+  } finally {
+    // Re-enable button
+    if (btn) { btn.disabled = false; btn.style.opacity = '1'; }
+  }
 }
 
 // =============================================

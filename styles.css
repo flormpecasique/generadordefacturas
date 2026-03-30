@@ -60,6 +60,8 @@
   --red-light: #fee2e2;
   --purple: #7c3aed;
   --purple-light: #ede9fe;
+  --paypal-blue: #003087;
+  --paypal-blue-light: #e8f0fe;
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
   --shadow-md: 0 4px 16px rgba(0,0,0,0.07), 0 2px 6px rgba(0,0,0,0.04);
   --shadow-lg: 0 12px 40px rgba(0,0,0,0.10), 0 4px 12px rgba(0,0,0,0.05);
@@ -89,6 +91,8 @@
   --red-light: rgba(248,113,113,0.12);
   --purple: #a78bfa;
   --purple-light: rgba(167,139,250,0.12);
+  --paypal-blue: #5b9cf6;
+  --paypal-blue-light: rgba(91,156,246,0.12);
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
   --shadow-md: 0 4px 16px rgba(0,0,0,0.4);
   --shadow-lg: 0 12px 40px rgba(0,0,0,0.5);
@@ -570,6 +574,7 @@ textarea { resize: vertical; min-height: 64px; }
   box-shadow: 0 2px 8px rgba(26,86,219,0.25);
 }
 .btn--primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(26,86,219,0.35); }
+.btn--primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
 .btn--large { padding: 11px 20px; font-size: 0.95rem; }
 
@@ -1054,22 +1059,111 @@ textarea { resize: vertical; min-height: 64px; }
 .site-footer {
   background: var(--bg-surface-2);
   border-top: 1px solid var(--border);
-  padding: var(--sp-8) var(--sp-6);
+  padding: var(--sp-10) var(--sp-6);
   text-align: center;
 }
 
-.footer-inner { max-width: 680px; margin: 0 auto; }
+.footer-inner {
+  max-width: 680px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-5);
+}
+
+/* Donation block */
+.footer-donation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-4);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-6) var(--sp-8);
+  width: 100%;
+  box-shadow: var(--shadow-sm);
+}
+
+.footer-donation__text {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 480px;
+}
+
+/* PayPal donate button */
+.btn-donate {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  background: #003087;
+  color: #ffffff !important;
+  border-radius: var(--radius-sm);
+  padding: 10px 22px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  font-family: var(--font-sans);
+  letter-spacing: 0.01em;
+  text-decoration: none !important;
+  border: none;
+  cursor: pointer;
+  transition: background var(--t-fast), transform var(--t-fast), box-shadow var(--t-fast);
+  box-shadow: 0 2px 8px rgba(0, 48, 135, 0.3);
+}
+
+.btn-donate:hover {
+  background: #002a75;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0, 48, 135, 0.4);
+  text-decoration: none !important;
+}
+
+.btn-donate:active {
+  transform: translateY(0);
+}
+
+[data-theme="dark"] .btn-donate {
+  background: #4a7fd4;
+  box-shadow: 0 2px 8px rgba(74, 127, 212, 0.35);
+}
+[data-theme="dark"] .btn-donate:hover {
+  background: #5b8fe0;
+  box-shadow: 0 4px 14px rgba(74, 127, 212, 0.5);
+}
+
+/* Footer divider */
+.footer-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--border);
+}
 
 .footer-legal {
   font-size: 0.78rem;
   color: var(--text-muted);
-  margin-bottom: var(--sp-2);
   line-height: 1.5;
 }
 
 .footer-copy {
   font-size: 0.78rem;
   color: var(--text-muted);
+}
+
+/* Author link */
+.footer-author {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color var(--t-fast);
+  border-bottom: 1px solid transparent;
+}
+
+.footer-author:hover {
+  color: var(--accent-hover);
+  border-bottom-color: var(--accent-hover);
+  text-decoration: none;
 }
 
 /* =============================================
@@ -1115,6 +1209,11 @@ textarea { resize: vertical; min-height: 64px; }
   }
 
   .seo-section { padding: var(--sp-10) var(--sp-4); }
+
+  /* Footer donation responsive */
+  .footer-donation {
+    padding: var(--sp-5) var(--sp-4);
+  }
 }
 
 /* =============================================

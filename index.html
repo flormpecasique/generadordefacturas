@@ -414,7 +414,7 @@
 
           <details class="faq-item">
             <summary>¿Puedo usar esta herramienta en el móvil?</summary>
-            <p>Sí. La herramienta está diseñada para funcionar perfectamente en móvil, tablet y escritorio. El diseño se adapta a cualquier tamaño de pantalla.</p>
+            <p>Sí. La herramienta está diseñada para funcionar perfectamente en móvil, tablet y escritorio. El diseño se adapta a cualquier tamaño de pantalla y la descarga de PDF funciona en iOS y Android.</p>
           </details>
 
           <details class="faq-item">
@@ -431,10 +431,46 @@
   <!-- Footer -->
   <footer class="site-footer">
     <div class="footer-inner">
+
+      <!-- Donation block -->
+      <div class="footer-donation">
+        <p class="footer-donation__text">
+          ¿Te ha resultado útil esta herramienta? Si te ha ahorrado tiempo, puedes invitarme a un café ☕ — con eso me ayudas a mantenerla gratis para todos.
+        </p>
+        <a
+          href="https://PayPal.me/flowermarine"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-donate"
+          aria-label="Hacer una donación por PayPal"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.067 8.478c.492.315.844.825.983 1.39.47 1.894-.928 3.765-3.184 4.226-.326.065-.663.098-1.006.098h-2.29l-.548 3.478H11.9l.163-1.022h1.186l.548-3.478h2.29c.344 0 .68-.033 1.007-.098 1.466-.293 2.524-1.416 2.973-2.594zM7.5 6h6.133c.491 0 .968.04 1.425.117 1.787.296 2.988 1.411 2.988 3.026 0 2.462-1.99 4.332-4.632 4.332H11.1l-.67 4.278H7.5L9 6z"/></svg>
+          Donar con PayPal
+        </a>
+      </div>
+
+      <div class="footer-divider"></div>
+
       <p class="footer-legal">Herramienta informativa. No constituye asesoramiento fiscal. Consulta con tu gestor para casos específicos.</p>
-      <p class="footer-copy">© 2026 FacturaRápida · Generador de facturas gratis para autónomos. Diseño por Flor Peña</p>
+      <p class="footer-copy">
+        © 2026 FacturaRápida · Generador de facturas gratis para autónomos.
+        Diseño y desarrollo por
+        <a
+          href="https://github.com/flormpecasique"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="footer-author"
+          aria-label="GitHub de Flor Peña"
+        >Flor Peña</a>
+      </p>
     </div>
   </footer>
+
+  <!-- PDF Libraries (loaded async — no impact on initial render) -->
+  <!-- html2canvas: renders DOM to canvas -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+  <!-- jsPDF: creates the actual PDF file -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
 
   <script src="script.js" defer></script>
 </body>
