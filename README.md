@@ -16,7 +16,7 @@ Te damos la bienvenida al portapapeles de Gboard. Aquí se guardarán los textos
 ⚠️ Proyecto en desarrollo. No usar como software de facturación oficial.
 
 - **Sin registro, sin servidor**: todo en el navegador, rápido y seguro.  
-- **100% legal España 2026**: cumple con Real Decreto 1619/2012.  
+- **Cumple los requisitos de contenido del RD 1619/2012 (formato de factura)** pero no constituye un sistema de facturación certificado (VeriFactu).
 - **Optimizado para SEO y social media**: para atraer tráfico orgánico de manera efectiva.  
 
 ---
