@@ -644,7 +644,7 @@ function updatePreview() {
   if (exemptNote && ivaRate === 0) footerParts.push(`<div class="inv-exempt-note">${escapeHtml(exemptNote)}</div>`);
 
   preview.innerHTML = `
-    <div class="inv-document" id="invoiceDocument">
+    <div class="inv-document tpl-${state.template || 'classic'}" id="invoiceDocument">
 
       <div class="inv-header">
         <div class="inv-brand">
