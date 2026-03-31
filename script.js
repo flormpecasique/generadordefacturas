@@ -730,8 +730,8 @@ function updatePreview() {
 }
 
 // =============================================
-// PRINT / PDF — Mobile-compatible via html2canvas + jsPDF
-// FIX: manejo especial de plantillas oscuras + strip text-decoration
+// PRINT / PDF — Full-bleed A4, mobile + desktop
+// FIX: sin márgenes blancos, ocupa el A4 completo
 // =============================================
 async function printInvoice() {
   const invoiceDoc = document.getElementById('invoiceDocument');
@@ -750,48 +750,63 @@ async function printInvoice() {
 
   showToast('⏳ Generando PDF…');
 
-  // Determina si la plantilla activa tiene fondo oscuro
   const isDarkTemplate = DARK_TEMPLATES.includes(state.template);
+
+  // A4 a 96dpi = 794px de ancho. Usamos escala ×2 → 1588px reales en el canvas.
+  // Forzar este ancho garantiza que el render siempre tenga proporción A4
+  // independientemente del tamaño de pantalla del dispositivo.
+  const A4_PX_WIDTH  = 794;
+  const A4_MM_WIDTH  = 210;
+  const A4_MM_HEIGHT = 297;
+  const SCALE        = 2;
 
   try {
     const canvas = await html2canvas(invoiceDoc, {
-      scale: 2,
+      scale: SCALE,
       useCORS: true,
       allowTaint: false,
-      // Fondo: null para oscuras (preserva su color), blanco para claras
       backgroundColor: isDarkTemplate ? null : '#ffffff',
       logging: false,
-      width: invoiceDoc.scrollWidth,
+      // Forzar el ancho de captura a exactamente 794px (A4)
+      // independientemente del tamaño real del elemento en pantalla
+      windowWidth: A4_PX_WIDTH,
+      width: A4_PX_WIDTH,
       height: invoiceDoc.scrollHeight,
       onclone: (clonedDoc) => {
-        // Solo forzar tema claro en plantillas que no son intrínsecamente oscuras
+        const clonedInvoice = clonedDoc.getElementById('invoiceDocument');
+        if (!clonedInvoice) return;
+
+        // Forzar ancho A4 en el clon para que el layout se recalcule
+        clonedInvoice.style.width       = A4_PX_WIDTH + 'px';
+        clonedInvoice.style.minWidth    = A4_PX_WIDTH + 'px';
+        clonedInvoice.style.maxWidth    = A4_PX_WIDTH + 'px';
+        clonedInvoice.style.boxSizing   = 'border-box';
+        clonedInvoice.style.borderRadius = '0';
+        clonedInvoice.style.boxShadow   = 'none';
+
+        // Forzar tema claro en plantillas no oscuras
         if (!isDarkTemplate) {
           clonedDoc.documentElement.setAttribute('data-theme', 'light');
-          const clonedInvoice = clonedDoc.getElementById('invoiceDocument');
-          if (clonedInvoice) {
-            clonedInvoice.style.background = '#ffffff';
-            clonedInvoice.style.color = '#111111';
-          }
+          clonedInvoice.style.background = '#ffffff';
+          clonedInvoice.style.color      = '#111111';
         }
 
-        /*
-         * FIX TACHADO — Eliminación de text-decoration en el render PDF:
-         * html2canvas captura los estilos computados del UA stylesheet
-         * (auto-linking de emails). Forzamos none en todos los elementos
-         * del documento de factura clonado.
-         */
-        const clonedInvoice = clonedDoc.getElementById('invoiceDocument');
-        if (clonedInvoice) {
-          clonedInvoice.querySelectorAll('*').forEach(el => {
-            el.style.textDecoration = 'none';
-            el.style.webkitTextDecoration = 'none';
-          });
-          clonedInvoice.style.textDecoration = 'none';
-        }
+        // FIX tachado: eliminar text-decoration en todos los elementos
+        clonedInvoice.querySelectorAll('*').forEach(el => {
+          el.style.textDecoration        = 'none';
+          el.style.webkitTextDecoration  = 'none';
+        });
       }
     });
 
     const { jsPDF } = window.jspdf;
+
+    // Calcular cuántas páginas A4 necesita el contenido
+    // Proporción: canvas.width = A4_PX_WIDTH * SCALE → A4_MM_WIDTH mm
+    const mmPerPx    = A4_MM_WIDTH / (A4_PX_WIDTH * SCALE);
+    const totalMmH   = canvas.height * mmPerPx;
+    const pageCount  = Math.ceil(totalMmH / A4_MM_HEIGHT);
+
     const pdf = new jsPDF({
       orientation: 'portrait',
       unit: 'mm',
@@ -799,29 +814,47 @@ async function printInvoice() {
       compress: true
     });
 
-    const pageW = pdf.internal.pageSize.getWidth();
-    const pageH = pdf.internal.pageSize.getHeight();
-    const margin = 10;
-    const usableW = pageW - margin * 2;
-    const usableH = pageH - margin * 2;
+    if (pageCount <= 1) {
+      // ── Caso normal: todo el contenido cabe en una página ──
+      // Escalar para llenar exactamente el ancho A4 (sin márgenes)
+      const imgH = Math.min(totalMmH, A4_MM_HEIGHT);
+      pdf.addImage(
+        canvas.toDataURL('image/jpeg', 0.95),
+        'JPEG',
+        0, 0,            // x=0, y=0 → sin márgenes
+        A4_MM_WIDTH,     // ancho = A4 completo
+        imgH             // alto proporcional
+      );
+    } else {
+      // ── Caso multi-página: cortar el canvas en trozos A4 ──
+      const pxPerPage = Math.floor((A4_MM_HEIGHT / A4_MM_WIDTH) * A4_PX_WIDTH * SCALE);
 
-    const aspectRatio = canvas.width / canvas.height;
-    let imgW = usableW;
-    let imgH = imgW / aspectRatio;
+      for (let page = 0; page < pageCount; page++) {
+        if (page > 0) pdf.addPage();
 
-    if (imgH > usableH) {
-      imgH = usableH;
-      imgW = imgH * aspectRatio;
+        const srcY      = page * pxPerPage;
+        const srcH      = Math.min(pxPerPage, canvas.height - srcY);
+        const sliceH_mm = srcH * mmPerPx;
+
+        // Crear un canvas temporal con el slice de esta página
+        const sliceCanvas  = document.createElement('canvas');
+        sliceCanvas.width  = canvas.width;
+        sliceCanvas.height = srcH;
+        const ctx = sliceCanvas.getContext('2d');
+        ctx.drawImage(canvas, 0, -srcY);
+
+        pdf.addImage(
+          sliceCanvas.toDataURL('image/jpeg', 0.95),
+          'JPEG',
+          0, 0,
+          A4_MM_WIDTH,
+          sliceH_mm
+        );
+      }
     }
 
-    const xOffset = margin + (usableW - imgW) / 2;
-
-    const imgData = canvas.toDataURL('image/jpeg', 0.95);
-    pdf.addImage(imgData, 'JPEG', xOffset, margin, imgW, imgH);
-
     const rawNumber = val('invoiceNumber') || 'factura';
-    const filename = rawNumber.replace(/[^a-zA-Z0-9\-_]/g, '_') + '.pdf';
-
+    const filename  = rawNumber.replace(/[^a-zA-Z0-9\-_]/g, '_') + '.pdf';
     pdf.save(filename);
     showToast('✅ PDF descargado correctamente');
 
