@@ -730,8 +730,8 @@ function updatePreview() {
 }
 
 // =============================================
-// PRINT / PDF — Full-bleed A4, mobile + desktop
-// FIX: sin márgenes blancos, ocupa el A4 completo
+// PRINT / PDF — Full-bleed A4, sin borde blanco inferior
+// FIX: altura mínima A4 garantizada aunque el contenido sea corto
 // =============================================
 async function printInvoice() {
   const invoiceDoc = document.getElementById('invoiceDocument');
@@ -752,10 +752,8 @@ async function printInvoice() {
 
   const isDarkTemplate = DARK_TEMPLATES.includes(state.template);
 
-  // A4 a 96dpi = 794px de ancho. Usamos escala ×2 → 1588px reales en el canvas.
-  // Forzar este ancho garantiza que el render siempre tenga proporción A4
-  // independientemente del tamaño de pantalla del dispositivo.
-  const A4_PX_WIDTH  = 794;
+  const A4_PX_WIDTH  = 794;                              // A4 a 96dpi
+  const A4_PX_HEIGHT = Math.round(794 * (297 / 210));   // → 1123px
   const A4_MM_WIDTH  = 210;
   const A4_MM_HEIGHT = 297;
   const SCALE        = 2;
@@ -767,24 +765,26 @@ async function printInvoice() {
       allowTaint: false,
       backgroundColor: isDarkTemplate ? null : '#ffffff',
       logging: false,
-      // Forzar el ancho de captura a exactamente 794px (A4)
-      // independientemente del tamaño real del elemento en pantalla
       windowWidth: A4_PX_WIDTH,
-      width: A4_PX_WIDTH,
-      height: invoiceDoc.scrollHeight,
+      width:  A4_PX_WIDTH,
+      // La altura de captura es siempre al menos una página A4 completa.
+      // Si el contenido es más alto, se respeta; si es más corto, se rellena.
+      height: Math.max(invoiceDoc.scrollHeight, A4_PX_HEIGHT),
       onclone: (clonedDoc) => {
         const clonedInvoice = clonedDoc.getElementById('invoiceDocument');
         if (!clonedInvoice) return;
 
-        // Forzar ancho A4 en el clon para que el layout se recalcule
-        clonedInvoice.style.width       = A4_PX_WIDTH + 'px';
-        clonedInvoice.style.minWidth    = A4_PX_WIDTH + 'px';
-        clonedInvoice.style.maxWidth    = A4_PX_WIDTH + 'px';
-        clonedInvoice.style.boxSizing   = 'border-box';
+        // Fijar ancho A4 y altura mínima A4 en el clon
+        clonedInvoice.style.width        = A4_PX_WIDTH + 'px';
+        clonedInvoice.style.minWidth     = A4_PX_WIDTH + 'px';
+        clonedInvoice.style.maxWidth     = A4_PX_WIDTH + 'px';
+        // minHeight garantiza que el fondo de color llene la página entera
+        clonedInvoice.style.minHeight    = A4_PX_HEIGHT + 'px';
+        clonedInvoice.style.boxSizing    = 'border-box';
         clonedInvoice.style.borderRadius = '0';
-        clonedInvoice.style.boxShadow   = 'none';
+        clonedInvoice.style.boxShadow    = 'none';
 
-        // Forzar tema claro en plantillas no oscuras
+        // Tema claro para plantillas no oscuras
         if (!isDarkTemplate) {
           clonedDoc.documentElement.setAttribute('data-theme', 'light');
           clonedInvoice.style.background = '#ffffff';
@@ -793,19 +793,17 @@ async function printInvoice() {
 
         // FIX tachado: eliminar text-decoration en todos los elementos
         clonedInvoice.querySelectorAll('*').forEach(el => {
-          el.style.textDecoration        = 'none';
-          el.style.webkitTextDecoration  = 'none';
+          el.style.textDecoration       = 'none';
+          el.style.webkitTextDecoration = 'none';
         });
       }
     });
 
     const { jsPDF } = window.jspdf;
 
-    // Calcular cuántas páginas A4 necesita el contenido
-    // Proporción: canvas.width = A4_PX_WIDTH * SCALE → A4_MM_WIDTH mm
-    const mmPerPx    = A4_MM_WIDTH / (A4_PX_WIDTH * SCALE);
-    const totalMmH   = canvas.height * mmPerPx;
-    const pageCount  = Math.ceil(totalMmH / A4_MM_HEIGHT);
+    const mmPerPx   = A4_MM_WIDTH / (A4_PX_WIDTH * SCALE);
+    const totalMmH  = canvas.height * mmPerPx;
+    const pageCount = Math.ceil(totalMmH / A4_MM_HEIGHT);
 
     const pdf = new jsPDF({
       orientation: 'portrait',
@@ -815,40 +813,47 @@ async function printInvoice() {
     });
 
     if (pageCount <= 1) {
-      // ── Caso normal: todo el contenido cabe en una página ──
-      // Escalar para llenar exactamente el ancho A4 (sin márgenes)
-      const imgH = Math.min(totalMmH, A4_MM_HEIGHT);
+      // Todo el contenido cabe en una página — ocupa el A4 completo
       pdf.addImage(
         canvas.toDataURL('image/jpeg', 0.95),
         'JPEG',
-        0, 0,            // x=0, y=0 → sin márgenes
-        A4_MM_WIDTH,     // ancho = A4 completo
-        imgH             // alto proporcional
+        0, 0,
+        A4_MM_WIDTH,
+        A4_MM_HEIGHT   // siempre exactamente 297mm → sin borde blanco inferior
       );
     } else {
-      // ── Caso multi-página: cortar el canvas en trozos A4 ──
+      // Multi-página: cortar en slices de exactamente 297mm
       const pxPerPage = Math.floor((A4_MM_HEIGHT / A4_MM_WIDTH) * A4_PX_WIDTH * SCALE);
 
       for (let page = 0; page < pageCount; page++) {
         if (page > 0) pdf.addPage();
 
-        const srcY      = page * pxPerPage;
-        const srcH      = Math.min(pxPerPage, canvas.height - srcY);
-        const sliceH_mm = srcH * mmPerPx;
+        const srcY   = page * pxPerPage;
+        const srcH   = Math.min(pxPerPage, canvas.height - srcY);
 
-        // Crear un canvas temporal con el slice de esta página
-        const sliceCanvas  = document.createElement('canvas');
-        sliceCanvas.width  = canvas.width;
-        sliceCanvas.height = srcH;
+        const sliceCanvas        = document.createElement('canvas');
+        sliceCanvas.width        = canvas.width;
+        // La última página también se rellena hasta pxPerPage
+        // para que no quede borde blanco al final
+        sliceCanvas.height       = pxPerPage;
         const ctx = sliceCanvas.getContext('2d');
-        ctx.drawImage(canvas, 0, -srcY);
+
+        // Fondo igual al de la plantilla en los posibles píxeles vacíos
+        if (!isDarkTemplate) {
+          ctx.fillStyle = '#ffffff';
+        } else {
+          // Para plantillas oscuras tomamos el color de fondo del canvas principal
+          ctx.fillStyle = 'transparent';
+        }
+        ctx.fillRect(0, 0, sliceCanvas.width, sliceCanvas.height);
+        ctx.drawImage(canvas, 0, srcY, canvas.width, srcH, 0, 0, canvas.width, srcH);
 
         pdf.addImage(
           sliceCanvas.toDataURL('image/jpeg', 0.95),
           'JPEG',
           0, 0,
           A4_MM_WIDTH,
-          sliceH_mm
+          A4_MM_HEIGHT
         );
       }
     }
