@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Desactiva auto-detección de emails/teléfonos (evita tachados en Safari/iOS) -->
+  <meta name="format-detection" content="telephone=no, email=no, address=no">
   <title>Generador de Facturas Gratis para Autónomos España 2026 | Sin Registro</title>
   <meta name="description" content="Crea facturas profesionales gratis en segundos. Sin registro, 100% privado, funciona en tu navegador. Para autónomos en España 2026. Con IVA, IRPF y descarga en PDF.">
   <meta name="keywords" content="generador facturas gratis, hacer factura autónomo España, crear factura online sin registro, factura electrónica 2026, plantilla factura autónomo">
@@ -101,6 +103,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <!-- Templates CSS — cargado antes de styles para que styles pueda sobrescribir si hace falta -->
+  <link rel="stylesheet" href="templates.css">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -166,6 +170,17 @@
         </div>
       </div>
 
+      <!-- ✦ SELECTOR DE PLANTILLA — renderizado por renderTemplatePicker() en script.js -->
+      <fieldset class="form-section" id="sectionTemplates">
+        <legend class="section-legend">
+          <span class="legend-dot legend-dot--gradient"></span>
+          Diseño de factura
+        </legend>
+        <div class="template-picker" id="templatePicker">
+          <!-- Inyectado por JS -->
+        </div>
+      </fieldset>
+
       <!-- Emisor -->
       <fieldset class="form-section" id="sectionEmisor">
         <legend class="section-legend">
@@ -189,7 +204,7 @@
         <div class="field-row">
           <div class="field-group">
             <label for="emisorEmail">Email</label>
-            <input type="email" id="emisorEmail" placeholder="hola@tuempresa.es" autocomplete="email">
+            <input type="text" id="emisorEmail" placeholder="hola@tuempresa.es" autocomplete="off">
           </div>
           <div class="field-group">
             <label for="emisorTelefono">Teléfono</label>
@@ -220,7 +235,7 @@
         </div>
         <div class="field-group">
           <label for="clienteEmail">Email cliente</label>
-          <input type="email" id="clienteEmail" placeholder="cliente@empresa.es" autocomplete="off">
+          <input type="text" id="clienteEmail" placeholder="cliente@empresa.es" autocomplete="off">
         </div>
       </fieldset>
 
@@ -519,9 +534,7 @@
   </footer>
 
   <!-- PDF Libraries (loaded async — no impact on initial render) -->
-  <!-- html2canvas: renders DOM to canvas -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
-  <!-- jsPDF: creates the actual PDF file -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
 
   <script src="script.js" defer></script>

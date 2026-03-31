@@ -1,0 +1,965 @@
+/* =============================================
+   FACTURA RÁPIDA — templates.css
+   8 plantillas de factura con estilos únicos
+   Zona Flower · 2026
+   ============================================= */
+
+/* =============================================
+   WIDGET: SELECTOR DE PLANTILLA
+   ============================================= */
+.template-picker {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--sp-2);
+}
+
+/* Tarjeta de plantilla */
+.tpl-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-surface-2);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 8px 4px 7px;
+  cursor: pointer;
+  transition: all var(--t-base);
+  font-family: var(--font-sans);
+  position: relative;
+}
+
+.tpl-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.10);
+  background: var(--bg-surface);
+}
+
+.tpl-card--active {
+  border-color: var(--accent);
+  background: var(--accent-light);
+  box-shadow: 0 0 0 3px rgba(26,86,219,0.12);
+}
+
+/* Tick de activo */
+.tpl-card--active::after {
+  content: '✓';
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  background: var(--accent);
+  color: #fff;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  font-size: 0.6rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* Miniatura visual de la plantilla */
+.tpl-card__thumb {
+  width: 52px;
+  height: 36px;
+  border-radius: 5px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(0,0,0,0.08);
+  flex-shrink: 0;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+}
+
+.tpl-card__thumb-head {
+  height: 38%;
+  flex-shrink: 0;
+}
+
+.tpl-card__thumb-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2.5px;
+  padding: 4px 5px;
+}
+
+.tpl-card__thumb-line {
+  height: 2px;
+  border-radius: 1px;
+  opacity: 0.35;
+  width: 100%;
+}
+
+.tpl-card__thumb-line--accent {
+  opacity: 0.65;
+  width: 65%;
+}
+
+.tpl-card__thumb-line--short {
+  width: 45%;
+}
+
+/* Nombre de plantilla */
+.tpl-card__name {
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-align: center;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+}
+
+.tpl-card--active .tpl-card__name {
+  color: var(--accent);
+}
+
+@media (max-width: 540px) {
+  .template-picker {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+  }
+  .tpl-card__thumb {
+    width: 40px;
+    height: 28px;
+  }
+  .tpl-card__name {
+    font-size: 0.57rem;
+  }
+  .tpl-card {
+    padding: 6px 2px 5px;
+  }
+}
+
+/* =============================================
+   T1 · CLASSIC
+   Azul profesional — estilo base por defecto.
+   (Usa todos los estilos heredados de styles.css)
+   ============================================= */
+/* .tpl-classic — sin overrides, usa la base */
+
+/* =============================================
+   T2 · NOIR EXECUTIVE
+   Header negro carbón + acentos dorados.
+   Aspecto de lujo y consultoría premium.
+   ============================================= */
+
+.tpl-noir {
+  background: #faf9f6 !important;
+}
+
+/* Header de sangrado completo, oscuro */
+.tpl-noir .inv-header {
+  background: #161616;
+  margin: -40px -44px 32px;
+  padding: 36px 44px 28px;
+  border-bottom: 3px solid #c9a84c;
+}
+
+.tpl-noir .inv-brand-name {
+  color: #f0ede4 !important;
+  font-size: 1.45rem;
+  font-weight: 700;
+}
+
+.tpl-noir .inv-brand-nif,
+.tpl-noir .inv-brand-address {
+  color: rgba(240, 237, 228, 0.55) !important;
+}
+
+.tpl-noir .inv-title {
+  color: #c9a84c !important;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.tpl-noir .inv-number,
+.tpl-noir .inv-date {
+  color: rgba(240, 237, 228, 0.55) !important;
+}
+
+.tpl-noir .inv-party-label {
+  color: #b8941e !important;
+  letter-spacing: 0.12em;
+}
+
+.tpl-noir .inv-party-name {
+  color: #1c1c1e !important;
+  font-weight: 600;
+}
+
+.tpl-noir .inv-lines-table thead tr {
+  background: #1c1c1e;
+}
+
+.tpl-noir .inv-lines-table th {
+  color: #c9a84c !important;
+  border-bottom-color: #c9a84c !important;
+  letter-spacing: 0.08em;
+}
+
+.tpl-noir .inv-lines-table td {
+  border-bottom-color: #ece9df !important;
+  color: #2c2c2e !important;
+}
+
+.tpl-noir .inv-lines-table td:nth-child(2),
+.tpl-noir .inv-lines-table td:nth-child(3),
+.tpl-noir .inv-lines-table td:nth-child(4) {
+  color: #6b6762 !important;
+}
+
+.tpl-noir .inv-lines-table tr:last-child td {
+  border-bottom: 2px solid #c9a84c !important;
+}
+
+.tpl-noir .inv-totals-divider {
+  background: #c9a84c !important;
+}
+
+.tpl-noir .inv-totals-row {
+  color: #555350;
+}
+
+.tpl-noir .inv-totals-row span:last-child {
+  color: #2c2c2e !important;
+}
+
+.tpl-noir .inv-totals-row--total span:last-child {
+  color: #b8941e !important;
+  font-size: 1.2rem;
+}
+
+.tpl-noir .inv-footer {
+  border-top: 2px solid #c9a84c !important;
+  color: #888683;
+}
+
+.tpl-noir .inv-footer strong {
+  color: #555350 !important;
+}
+
+/* =============================================
+   T3 · VERDE BOSQUE
+   Header verde intenso + cuerpo blanco fresco.
+   Agencias de sostenibilidad, freelances eco.
+   ============================================= */
+
+.tpl-verde {
+  background: #ffffff !important;
+}
+
+.tpl-verde .inv-header {
+  background: linear-gradient(145deg, #064e3b 0%, #047857 100%);
+  margin: -40px -44px 32px;
+  padding: 36px 44px 28px;
+  border-bottom: none;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Círculo decorativo orgánico */
+.tpl-verde .inv-header::after {
+  content: '';
+  position: absolute;
+  bottom: -60px;
+  right: -50px;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.055);
+  pointer-events: none;
+}
+
+.tpl-verde .inv-brand-name {
+  color: #ffffff !important;
+  font-weight: 700;
+}
+
+.tpl-verde .inv-brand-nif,
+.tpl-verde .inv-brand-address {
+  color: rgba(209, 250, 229, 0.68) !important;
+}
+
+.tpl-verde .inv-title {
+  color: #6ee7b7 !important;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.tpl-verde .inv-number,
+.tpl-verde .inv-date {
+  color: rgba(209, 250, 229, 0.62) !important;
+}
+
+.tpl-verde .inv-party-label {
+  color: #059669 !important;
+  letter-spacing: 0.12em;
+}
+
+.tpl-verde .inv-party-name {
+  color: #064e3b !important;
+  font-weight: 600;
+}
+
+.tpl-verde .inv-lines-table thead tr {
+  background: #ecfdf5;
+}
+
+.tpl-verde .inv-lines-table th {
+  color: #065f46 !important;
+  border-bottom: 2px solid #6ee7b7 !important;
+  letter-spacing: 0.07em;
+}
+
+.tpl-verde .inv-lines-table td {
+  border-bottom-color: #f0fdf4 !important;
+  color: #1f2937 !important;
+}
+
+.tpl-verde .inv-lines-table td:nth-child(2),
+.tpl-verde .inv-lines-table td:nth-child(3),
+.tpl-verde .inv-lines-table td:nth-child(4) {
+  color: #065f46 !important;
+}
+
+.tpl-verde .inv-lines-table tr:last-child td {
+  border-bottom: 2px solid #6ee7b7 !important;
+}
+
+.tpl-verde .inv-totals-divider {
+  background: #34d399 !important;
+  height: 2px;
+}
+
+.tpl-verde .inv-totals-row span:last-child {
+  color: #1f2937 !important;
+}
+
+.tpl-verde .inv-totals-row--total span:last-child {
+  color: #059669 !important;
+  font-size: 1.15rem;
+}
+
+.tpl-verde .inv-footer {
+  border-top: 2px solid #a7f3d0 !important;
+  color: #64748b;
+}
+
+.tpl-verde .inv-footer strong {
+  color: #065f46 !important;
+}
+
+/* =============================================
+   T4 · CORAL SUNSET
+   Degradado cálido coral → naranja → ámbar.
+   Startups, diseñadores, creativos.
+   ============================================= */
+
+.tpl-coral {
+  background: #ffffff !important;
+}
+
+.tpl-coral .inv-header {
+  background: linear-gradient(135deg, #e55b4d 0%, #fb923c 62%, #fbbf24 100%);
+  margin: -40px -44px 32px;
+  padding: 36px 44px 28px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Burbujas decorativas en el header */
+.tpl-coral .inv-header::before {
+  content: '';
+  position: absolute;
+  top: -70px;
+  right: -30px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  pointer-events: none;
+}
+
+.tpl-coral .inv-header::after {
+  content: '';
+  position: absolute;
+  bottom: -40px;
+  right: 100px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+  pointer-events: none;
+}
+
+.tpl-coral .inv-brand-name {
+  color: #ffffff !important;
+  font-weight: 800;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.12);
+}
+
+.tpl-coral .inv-brand-nif,
+.tpl-coral .inv-brand-address {
+  color: rgba(255,255,255,0.76) !important;
+}
+
+.tpl-coral .inv-title {
+  color: #ffffff !important;
+  font-weight: 800;
+  font-size: 2.2rem;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.14);
+  letter-spacing: -0.02em;
+}
+
+.tpl-coral .inv-number,
+.tpl-coral .inv-date {
+  color: rgba(255,255,255,0.78) !important;
+}
+
+.tpl-coral .inv-party-label {
+  color: #e55b4d !important;
+}
+
+.tpl-coral .inv-party-name {
+  color: #1c1917 !important;
+  font-weight: 600;
+}
+
+.tpl-coral .inv-lines-table thead tr {
+  background: #fff7ed;
+}
+
+.tpl-coral .inv-lines-table th {
+  color: #c2410c !important;
+  border-bottom: 2px solid #fdba74 !important;
+}
+
+.tpl-coral .inv-lines-table td {
+  border-bottom-color: #fff7ed !important;
+  color: #1c1917 !important;
+}
+
+.tpl-coral .inv-lines-table td:nth-child(2),
+.tpl-coral .inv-lines-table td:nth-child(3),
+.tpl-coral .inv-lines-table td:nth-child(4) {
+  color: #c2410c !important;
+}
+
+.tpl-coral .inv-lines-table tr:last-child td {
+  border-bottom: 2px solid #fdba74 !important;
+}
+
+.tpl-coral .inv-totals-divider {
+  background: linear-gradient(to right, #e55b4d, #fb923c) !important;
+  height: 2px;
+}
+
+.tpl-coral .inv-totals-row span:last-child {
+  color: #1c1917 !important;
+}
+
+.tpl-coral .inv-totals-row--total span:last-child {
+  color: #e55b4d !important;
+  font-size: 1.2rem;
+}
+
+.tpl-coral .inv-footer {
+  border-top: 2px solid #fed7aa !important;
+}
+
+/* =============================================
+   T5 · GLACIAR
+   Azul hielo ultra-minimalista + barra lateral.
+   Consultoras, abogados, servicios técnicos.
+   ============================================= */
+
+.tpl-glaciar {
+  background: #f8fbff !important;
+  border-left: 5px solid #0ea5e9 !important;
+}
+
+.tpl-glaciar .inv-header {
+  border-bottom: 1px solid #bae6fd;
+  padding-bottom: 24px;
+  margin-bottom: 28px;
+}
+
+.tpl-glaciar .inv-brand-name {
+  color: #0c4a6e !important;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.tpl-glaciar .inv-brand-nif,
+.tpl-glaciar .inv-brand-address {
+  color: #64748b !important;
+}
+
+.tpl-glaciar .inv-title {
+  color: #0ea5e9 !important;
+  font-weight: 800;
+  font-size: 1.6rem;
+  letter-spacing: 0.18em;
+}
+
+.tpl-glaciar .inv-number {
+  color: #64748b !important;
+}
+
+.tpl-glaciar .inv-date {
+  color: #94a3b8 !important;
+}
+
+.tpl-glaciar .inv-party-label {
+  color: #0ea5e9 !important;
+  letter-spacing: 0.14em;
+}
+
+.tpl-glaciar .inv-party-name {
+  color: #0c4a6e !important;
+  font-weight: 600;
+}
+
+.tpl-glaciar .inv-party-detail {
+  color: #64748b !important;
+}
+
+.tpl-glaciar .inv-lines-table thead tr {
+  background: #e0f2fe;
+}
+
+.tpl-glaciar .inv-lines-table th {
+  color: #0369a1 !important;
+  border-bottom: 2px solid #7dd3fc !important;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+}
+
+.tpl-glaciar .inv-lines-table td {
+  border-bottom-color: #e0f2fe !important;
+  color: #0c4a6e !important;
+}
+
+.tpl-glaciar .inv-lines-table td:nth-child(2),
+.tpl-glaciar .inv-lines-table td:nth-child(3),
+.tpl-glaciar .inv-lines-table td:nth-child(4) {
+  color: #0369a1 !important;
+}
+
+.tpl-glaciar .inv-lines-table tr:last-child td {
+  border-bottom: 2px solid #7dd3fc !important;
+}
+
+.tpl-glaciar .inv-totals-divider {
+  background: #7dd3fc !important;
+}
+
+.tpl-glaciar .inv-totals-row {
+  color: #475569;
+}
+
+.tpl-glaciar .inv-totals-row span:last-child {
+  color: #0c4a6e !important;
+}
+
+.tpl-glaciar .inv-totals-row--total span:last-child {
+  color: #0369a1 !important;
+  font-size: 1.15rem;
+}
+
+.tpl-glaciar .inv-footer {
+  border-top: 1px solid #bae6fd !important;
+  color: #94a3b8;
+}
+
+.tpl-glaciar .inv-footer strong {
+  color: #64748b !important;
+}
+
+/* =============================================
+   T6 · OBSIDIAN
+   Siempre oscuro. Estética fintech/tech.
+   SaaS, devs, agencias digitales.
+   ============================================= */
+
+.tpl-obsidian {
+  background: #0f172a !important;
+  color: #e2e8f0 !important;
+  border: 1px solid #1e293b !important;
+}
+
+.tpl-obsidian .inv-header {
+  background: #020617;
+  margin: -40px -44px 32px;
+  padding: 36px 44px 28px;
+  border-bottom: 1px solid rgba(6,182,212,0.25);
+}
+
+.tpl-obsidian .inv-brand-name {
+  color: #f1f5f9 !important;
+  font-weight: 700;
+}
+
+.tpl-obsidian .inv-brand-nif,
+.tpl-obsidian .inv-brand-address {
+  color: rgba(148,163,184,0.62) !important;
+}
+
+.tpl-obsidian .inv-title {
+  color: #06b6d4 !important;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  font-size: 1.8rem;
+}
+
+.tpl-obsidian .inv-number,
+.tpl-obsidian .inv-date {
+  color: rgba(148,163,184,0.52) !important;
+}
+
+.tpl-obsidian .inv-party-label {
+  color: #06b6d4 !important;
+  letter-spacing: 0.12em;
+}
+
+.tpl-obsidian .inv-party-name {
+  color: #f1f5f9 !important;
+  font-weight: 600;
+}
+
+.tpl-obsidian .inv-party-detail {
+  color: #94a3b8 !important;
+}
+
+.tpl-obsidian .inv-lines-table thead tr {
+  background: rgba(6,182,212,0.07);
+}
+
+.tpl-obsidian .inv-lines-table th {
+  color: #06b6d4 !important;
+  border-bottom: 1px solid rgba(6,182,212,0.25) !important;
+  letter-spacing: 0.08em;
+}
+
+.tpl-obsidian .inv-lines-table td {
+  border-bottom-color: rgba(255,255,255,0.04) !important;
+  color: #cbd5e1 !important;
+}
+
+.tpl-obsidian .inv-lines-table td:nth-child(2),
+.tpl-obsidian .inv-lines-table td:nth-child(3),
+.tpl-obsidian .inv-lines-table td:nth-child(4) {
+  color: #94a3b8 !important;
+}
+
+.tpl-obsidian .inv-lines-table tr:last-child td {
+  border-bottom: 1px solid rgba(6,182,212,0.25) !important;
+}
+
+.tpl-obsidian .inv-totals-divider {
+  background: rgba(6,182,212,0.3) !important;
+}
+
+.tpl-obsidian .inv-totals-row {
+  color: #64748b;
+}
+
+.tpl-obsidian .inv-totals-row span:last-child {
+  color: #cbd5e1 !important;
+}
+
+/* IVA verde, IRPF rojo también en dark */
+.tpl-obsidian .inv-totals-row--iva span:last-child {
+  color: #34d399 !important;
+}
+
+.tpl-obsidian .inv-totals-row--irpf span:last-child {
+  color: #f87171 !important;
+}
+
+.tpl-obsidian .inv-totals-row--total {
+  color: #f1f5f9;
+}
+
+.tpl-obsidian .inv-totals-row--total span:last-child {
+  color: #06b6d4 !important;
+  font-size: 1.2rem;
+}
+
+.tpl-obsidian .inv-footer {
+  border-top: 1px solid rgba(6,182,212,0.2) !important;
+  color: #475569;
+}
+
+.tpl-obsidian .inv-footer strong {
+  color: #94a3b8 !important;
+}
+
+.tpl-obsidian .inv-footer span {
+  color: #64748b !important;
+}
+
+/* =============================================
+   T7 · DORADO
+   Cálido ámbar/dorado. Lujo premium cálido.
+   Arquitectos, notarios, servicios premium.
+   ============================================= */
+
+.tpl-dorado {
+  background: #fffbf0 !important;
+  border-top: 5px solid #f59e0b !important;
+}
+
+.tpl-dorado .inv-header {
+  border-bottom: 2px solid #fde68a;
+  padding-bottom: 24px;
+  margin-bottom: 28px;
+}
+
+.tpl-dorado .inv-brand-name {
+  color: #78350f !important;
+  font-weight: 800;
+  font-size: 1.4rem;
+}
+
+.tpl-dorado .inv-brand-nif,
+.tpl-dorado .inv-brand-address {
+  color: rgba(146,64,14,0.6) !important;
+}
+
+.tpl-dorado .inv-title {
+  color: #d97706 !important;
+  font-weight: 800;
+  font-size: 2rem;
+  letter-spacing: 0.04em;
+}
+
+.tpl-dorado .inv-number,
+.tpl-dorado .inv-date {
+  color: rgba(180,83,9,0.65) !important;
+}
+
+.tpl-dorado .inv-party-label {
+  color: #d97706 !important;
+  letter-spacing: 0.12em;
+}
+
+.tpl-dorado .inv-party-name {
+  color: #78350f !important;
+  font-weight: 600;
+}
+
+.tpl-dorado .inv-party-detail {
+  color: rgba(146,64,14,0.65) !important;
+}
+
+.tpl-dorado .inv-lines-table thead tr {
+  background: #fef3c7;
+}
+
+.tpl-dorado .inv-lines-table th {
+  color: #92400e !important;
+  border-bottom: 2px solid #f59e0b !important;
+  letter-spacing: 0.07em;
+}
+
+.tpl-dorado .inv-lines-table td {
+  border-bottom-color: #fef9ec !important;
+  color: #1c1917 !important;
+}
+
+.tpl-dorado .inv-lines-table td:nth-child(2),
+.tpl-dorado .inv-lines-table td:nth-child(3),
+.tpl-dorado .inv-lines-table td:nth-child(4) {
+  color: #92400e !important;
+}
+
+.tpl-dorado .inv-lines-table tr:last-child td {
+  border-bottom: 2px solid #f59e0b !important;
+}
+
+.tpl-dorado .inv-totals-divider {
+  background: linear-gradient(to right, #f59e0b, #d97706) !important;
+  height: 2px;
+}
+
+.tpl-dorado .inv-totals-row {
+  color: rgba(120,53,15,0.75);
+}
+
+.tpl-dorado .inv-totals-row span:last-child {
+  color: #1c1917 !important;
+}
+
+.tpl-dorado .inv-totals-row--total span:last-child {
+  color: #d97706 !important;
+  font-size: 1.2rem;
+}
+
+.tpl-dorado .inv-footer {
+  border-top: 2px solid #fde68a !important;
+  color: rgba(146,64,14,0.65);
+}
+
+.tpl-dorado .inv-footer strong {
+  color: #78350f !important;
+}
+
+/* =============================================
+   T8 · BLUEPRINT
+   Azul marino oscuro + cuadrícula técnica.
+   Ingenieros, arquitectos, técnicos.
+   ============================================= */
+
+.tpl-blueprint {
+  background-color: #1e3a5f !important;
+  color: #e2e8f0 !important;
+  /* Cuadrícula técnica sutil */
+  background-image:
+    linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px) !important;
+  background-size: 20px 20px !important;
+  border: 1px solid #2d4e7e !important;
+}
+
+.tpl-blueprint .inv-header {
+  background: #112d4e;
+  margin: -40px -44px 32px;
+  padding: 36px 44px 28px;
+  border-bottom: 2px solid #38bdf8;
+}
+
+.tpl-blueprint .inv-brand-name {
+  color: #f0f9ff !important;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  letter-spacing: -0.01em;
+}
+
+.tpl-blueprint .inv-brand-nif,
+.tpl-blueprint .inv-brand-address {
+  color: rgba(186,230,253,0.56) !important;
+  font-family: var(--font-mono);
+}
+
+.tpl-blueprint .inv-title {
+  color: #38bdf8 !important;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  letter-spacing: 0.2em;
+  font-size: 1.6rem;
+}
+
+.tpl-blueprint .inv-number,
+.tpl-blueprint .inv-date {
+  color: rgba(186,230,253,0.52) !important;
+  font-family: var(--font-mono);
+}
+
+.tpl-blueprint .inv-party-label {
+  color: #38bdf8 !important;
+  font-family: var(--font-mono);
+  letter-spacing: 0.14em;
+}
+
+.tpl-blueprint .inv-party-name {
+  color: #f0f9ff !important;
+  font-weight: 600;
+}
+
+.tpl-blueprint .inv-party-detail {
+  color: #93c5fd !important;
+  font-family: var(--font-mono);
+}
+
+/* Recuadro panel clientes */
+.tpl-blueprint .inv-parties {
+  background: rgba(17,45,78,0.6);
+  border-radius: 8px;
+  padding: 16px;
+  border: 1px solid rgba(56,189,248,0.18);
+  margin-bottom: 28px;
+}
+
+.tpl-blueprint .inv-lines-table thead tr {
+  background: rgba(17,45,78,0.85);
+}
+
+.tpl-blueprint .inv-lines-table th {
+  color: #38bdf8 !important;
+  border-bottom: 1px solid rgba(56,189,248,0.35) !important;
+  font-family: var(--font-mono);
+  letter-spacing: 0.1em;
+}
+
+.tpl-blueprint .inv-lines-table td {
+  border-bottom-color: rgba(255,255,255,0.04) !important;
+  color: #bae6fd !important;
+}
+
+.tpl-blueprint .inv-lines-table td:nth-child(2),
+.tpl-blueprint .inv-lines-table td:nth-child(3),
+.tpl-blueprint .inv-lines-table td:nth-child(4) {
+  color: #7dd3fc !important;
+  font-family: var(--font-mono);
+}
+
+.tpl-blueprint .inv-lines-table tr:last-child td {
+  border-bottom: 1px solid rgba(56,189,248,0.35) !important;
+}
+
+.tpl-blueprint .inv-totals-row {
+  color: #7dd3fc;
+}
+
+.tpl-blueprint .inv-totals-row span:last-child {
+  color: #bae6fd !important;
+}
+
+.tpl-blueprint .inv-totals-divider {
+  background: rgba(56,189,248,0.35) !important;
+}
+
+.tpl-blueprint .inv-totals-row--total {
+  color: #f0f9ff;
+}
+
+.tpl-blueprint .inv-totals-row--total span:last-child {
+  color: #38bdf8 !important;
+  font-size: 1.2rem;
+}
+
+.tpl-blueprint .inv-footer {
+  border-top: 1px solid rgba(56,189,248,0.25) !important;
+  color: #64748b;
+}
+
+.tpl-blueprint .inv-footer strong {
+  color: #93c5fd !important;
+}
+
+.tpl-blueprint .inv-footer span {
+  color: #7dd3fc !important;
+}
+
+/* =============================================
+   AJUSTES MÓVIL — headers de sangrado completo
+   Corrige los márgenes negativos en pantallas
+   pequeñas donde el padding es 24px/20px.
+   ============================================= */
+@media (max-width: 768px) {
+  .tpl-noir .inv-header,
+  .tpl-verde .inv-header,
+  .tpl-coral .inv-header,
+  .tpl-obsidian .inv-header,
+  .tpl-blueprint .inv-header {
+    margin: -24px -20px 24px;
+    padding: 24px 20px 20px;
+  }
+}
