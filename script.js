@@ -178,6 +178,105 @@ function updateHashChainInfo() {
 }
 
 // =============================================
+// SISTEMA DE PLANTILLAS — 8 diseños
+// =============================================
+
+/** Definición de las 8 plantillas con sus miniaturas */
+const TEMPLATES = [
+  {
+    id: 'classic',
+    name: 'Clásico',
+    thumb: { head: '#1a56db', body: '#ffffff', accent: '#1a56db', text: '#e2e0d9' }
+  },
+  {
+    id: 'noir',
+    name: 'Noir',
+    thumb: { head: '#161616', body: '#faf9f6', accent: '#c9a84c', text: '#ece9df' }
+  },
+  {
+    id: 'verde',
+    name: 'Verde',
+    thumb: { head: '#065f46', body: '#ffffff', accent: '#6ee7b7', text: '#d1fae5' }
+  },
+  {
+    id: 'coral',
+    name: 'Coral',
+    thumb: { head: '#e55b4d', body: '#ffffff', accent: '#fb923c', text: '#fed7aa' }
+  },
+  {
+    id: 'glaciar',
+    name: 'Glaciar',
+    thumb: { head: '#f8fbff', body: '#f8fbff', accent: '#0ea5e9', text: '#bae6fd' }
+  },
+  {
+    id: 'obsidian',
+    name: 'Obsidian',
+    thumb: { head: '#020617', body: '#0f172a', accent: '#06b6d4', text: '#1e293b' }
+  },
+  {
+    id: 'dorado',
+    name: 'Dorado',
+    thumb: { head: '#fef3c7', body: '#fffbf0', accent: '#f59e0b', text: '#fde68a' }
+  },
+  {
+    id: 'blueprint',
+    name: 'Blueprint',
+    thumb: { head: '#112d4e', body: '#1e3a5f', accent: '#38bdf8', text: '#2d4e7e' }
+  }
+];
+
+/** Renderiza el selector de plantillas en #templatePicker */
+function renderTemplatePicker() {
+  const container = document.getElementById('templatePicker');
+  if (!container) return;
+
+  container.innerHTML = TEMPLATES.map(t => {
+    const { head, body, accent, text } = t.thumb;
+    return `
+      <button
+        class="tpl-card ${state.template === t.id ? 'tpl-card--active' : ''}"
+        onclick="selectTemplate('${t.id}')"
+        type="button"
+        aria-label="Plantilla ${t.name}"
+        aria-pressed="${state.template === t.id}"
+        title="${t.name}"
+      >
+        <div class="tpl-card__thumb">
+          <div class="tpl-card__thumb-head" style="background:${head}"></div>
+          <div class="tpl-card__thumb-body" style="background:${body}">
+            <div class="tpl-card__thumb-line" style="background:${text}"></div>
+            <div class="tpl-card__thumb-line tpl-card__thumb-line--accent" style="background:${accent}"></div>
+            <div class="tpl-card__thumb-line tpl-card__thumb-line--short" style="background:${text}"></div>
+          </div>
+        </div>
+        <span class="tpl-card__name">${t.name}</span>
+      </button>
+    `;
+  }).join('');
+}
+
+/** Aplica una plantilla y actualiza la vista */
+function selectTemplate(id) {
+  state.template = id;
+  // Persiste la preferencia (siempre, sin necesitar localStorage completo)
+  try { localStorage.setItem('factura_template', id); } catch (_) {}
+  renderTemplatePicker();
+  updatePreview();
+  const name = TEMPLATES.find(t => t.id === id)?.name || id;
+  showToast(`🎨 Plantilla "${name}" aplicada`);
+}
+
+/** Recupera la plantilla guardada al iniciar */
+function loadSavedTemplate() {
+  try {
+    const saved = localStorage.getItem('factura_template');
+    if (saved && TEMPLATES.some(t => t.id === saved)) {
+      state.template = saved;
+    }
+  } catch (_) {}
+}
+
+// =============================================
 // INIT
 // =============================================
 document.addEventListener('DOMContentLoaded', () => {
