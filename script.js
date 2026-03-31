@@ -11,9 +11,118 @@
 let state = {
   lines: [],
   storageEnabled: false,
-  lineIdCounter: 0
-  template: 'classic'
+  lineIdCounter: 0,
+  template: 'classic'   // plantilla activa
 };
+
+// =============================================
+// SISTEMA DE PLANTILLAS — 8 diseños
+// Zona Flower · 2026
+// =============================================
+
+/**
+ * Definición de las 8 plantillas.
+ * thumb: colores para la miniatura visual del selector.
+ */
+const TEMPLATES = [
+  {
+    id: 'classic',
+    name: 'Clásico',
+    thumb: { head: '#1a56db', body: '#ffffff', accent: '#1a56db', text: '#e2e0d9' }
+  },
+  {
+    id: 'noir',
+    name: 'Noir',
+    thumb: { head: '#161616', body: '#faf9f6', accent: '#c9a84c', text: '#ece9df' }
+  },
+  {
+    id: 'verde',
+    name: 'Verde',
+    thumb: { head: '#065f46', body: '#ffffff', accent: '#6ee7b7', text: '#d1fae5' }
+  },
+  {
+    id: 'coral',
+    name: 'Coral',
+    thumb: { head: '#e55b4d', body: '#ffffff', accent: '#fb923c', text: '#fed7aa' }
+  },
+  {
+    id: 'glaciar',
+    name: 'Glaciar',
+    thumb: { head: '#e0f2fe', body: '#f8fbff', accent: '#0ea5e9', text: '#bae6fd' }
+  },
+  {
+    id: 'obsidian',
+    name: 'Obsidian',
+    thumb: { head: '#020617', body: '#0f172a', accent: '#06b6d4', text: '#1e293b' }
+  },
+  {
+    id: 'dorado',
+    name: 'Dorado',
+    thumb: { head: '#fef3c7', body: '#fffbf0', accent: '#f59e0b', text: '#fde68a' }
+  },
+  {
+    id: 'blueprint',
+    name: 'Blueprint',
+    thumb: { head: '#112d4e', body: '#1e3a5f', accent: '#38bdf8', text: '#2d4e7e' }
+  }
+];
+
+/**
+ * Plantillas con fondo intrínsecamente oscuro.
+ * El PDF se genera sin forzar fondo blanco para estas.
+ */
+const DARK_TEMPLATES = ['obsidian', 'blueprint', 'noir'];
+
+/** Renderiza el selector de plantillas en #templatePicker */
+function renderTemplatePicker() {
+  const container = document.getElementById('templatePicker');
+  if (!container) return;
+
+  container.innerHTML = TEMPLATES.map(t => {
+    const { head, body, accent, text } = t.thumb;
+    const isActive = state.template === t.id;
+    return `
+      <button
+        class="tpl-card${isActive ? ' tpl-card--active' : ''}"
+        onclick="selectTemplate('${t.id}')"
+        type="button"
+        aria-label="Plantilla ${t.name}"
+        aria-pressed="${isActive}"
+        title="${t.name}"
+      >
+        <div class="tpl-card__thumb">
+          <div class="tpl-card__thumb-head" style="background:${head}"></div>
+          <div class="tpl-card__thumb-body" style="background:${body}">
+            <div class="tpl-card__thumb-line" style="background:${text}"></div>
+            <div class="tpl-card__thumb-line tpl-card__thumb-line--accent" style="background:${accent}"></div>
+            <div class="tpl-card__thumb-line tpl-card__thumb-line--short" style="background:${text}"></div>
+          </div>
+        </div>
+        <span class="tpl-card__name">${t.name}</span>
+      </button>
+    `;
+  }).join('');
+}
+
+/** Aplica una plantilla, guarda la preferencia y actualiza la vista */
+function selectTemplate(id) {
+  state.template = id;
+  try { localStorage.setItem('factura_template', id); } catch (_) {}
+  renderTemplatePicker();
+  updatePreview();
+  const name = TEMPLATES.find(t => t.id === id)?.name || id;
+  showToast(`🎨 Plantilla "${name}" aplicada`);
+}
+
+/** Recupera la plantilla guardada al iniciar */
+function loadSavedTemplate() {
+  try {
+    const saved = localStorage.getItem('factura_template');
+    if (saved && TEMPLATES.some(t => t.id === saved)) {
+      state.template = saved;
+    }
+  } catch (_) {}
+}
 
 // =============================================
 // VERI*FACTU — REGISTRO FISCAL (Camino B)
@@ -75,7 +184,7 @@ async function generarRegistroFiscal() {
     nifEmisor:       val('emisorNif') || 'NO-INFORMADO',
     numSerie:        val('invoiceNumber') || 'FAC-0001',
     fechaExpedicion: val('invoiceDate') || ahora.toISOString().split('T')[0],
-    tipoFactura:     'F1',   // Factura completa
+    tipoFactura:     'F1',
     cuotaTotal:      iva,
     importeTotal:    total,
   };
@@ -178,117 +287,18 @@ function updateHashChainInfo() {
 }
 
 // =============================================
-// SISTEMA DE PLANTILLAS — 8 diseños
-// =============================================
-
-/** Definición de las 8 plantillas con sus miniaturas */
-const TEMPLATES = [
-  {
-    id: 'classic',
-    name: 'Clásico',
-    thumb: { head: '#1a56db', body: '#ffffff', accent: '#1a56db', text: '#e2e0d9' }
-  },
-  {
-    id: 'noir',
-    name: 'Noir',
-    thumb: { head: '#161616', body: '#faf9f6', accent: '#c9a84c', text: '#ece9df' }
-  },
-  {
-    id: 'verde',
-    name: 'Verde',
-    thumb: { head: '#065f46', body: '#ffffff', accent: '#6ee7b7', text: '#d1fae5' }
-  },
-  {
-    id: 'coral',
-    name: 'Coral',
-    thumb: { head: '#e55b4d', body: '#ffffff', accent: '#fb923c', text: '#fed7aa' }
-  },
-  {
-    id: 'glaciar',
-    name: 'Glaciar',
-    thumb: { head: '#f8fbff', body: '#f8fbff', accent: '#0ea5e9', text: '#bae6fd' }
-  },
-  {
-    id: 'obsidian',
-    name: 'Obsidian',
-    thumb: { head: '#020617', body: '#0f172a', accent: '#06b6d4', text: '#1e293b' }
-  },
-  {
-    id: 'dorado',
-    name: 'Dorado',
-    thumb: { head: '#fef3c7', body: '#fffbf0', accent: '#f59e0b', text: '#fde68a' }
-  },
-  {
-    id: 'blueprint',
-    name: 'Blueprint',
-    thumb: { head: '#112d4e', body: '#1e3a5f', accent: '#38bdf8', text: '#2d4e7e' }
-  }
-];
-
-/** Renderiza el selector de plantillas en #templatePicker */
-function renderTemplatePicker() {
-  const container = document.getElementById('templatePicker');
-  if (!container) return;
-
-  container.innerHTML = TEMPLATES.map(t => {
-    const { head, body, accent, text } = t.thumb;
-    return `
-      <button
-        class="tpl-card ${state.template === t.id ? 'tpl-card--active' : ''}"
-        onclick="selectTemplate('${t.id}')"
-        type="button"
-        aria-label="Plantilla ${t.name}"
-        aria-pressed="${state.template === t.id}"
-        title="${t.name}"
-      >
-        <div class="tpl-card__thumb">
-          <div class="tpl-card__thumb-head" style="background:${head}"></div>
-          <div class="tpl-card__thumb-body" style="background:${body}">
-            <div class="tpl-card__thumb-line" style="background:${text}"></div>
-            <div class="tpl-card__thumb-line tpl-card__thumb-line--accent" style="background:${accent}"></div>
-            <div class="tpl-card__thumb-line tpl-card__thumb-line--short" style="background:${text}"></div>
-          </div>
-        </div>
-        <span class="tpl-card__name">${t.name}</span>
-      </button>
-    `;
-  }).join('');
-}
-
-/** Aplica una plantilla y actualiza la vista */
-function selectTemplate(id) {
-  state.template = id;
-  // Persiste la preferencia (siempre, sin necesitar localStorage completo)
-  try { localStorage.setItem('factura_template', id); } catch (_) {}
-  renderTemplatePicker();
-  updatePreview();
-  const name = TEMPLATES.find(t => t.id === id)?.name || id;
-  showToast(`🎨 Plantilla "${name}" aplicada`);
-}
-
-/** Recupera la plantilla guardada al iniciar */
-function loadSavedTemplate() {
-  try {
-    const saved = localStorage.getItem('factura_template');
-    if (saved && TEMPLATES.some(t => t.id === saved)) {
-      state.template = saved;
-    }
-  } catch (_) {}
-}
-
-// =============================================
 // INIT
 // =============================================
 document.addEventListener('DOMContentLoaded', () => {
   checkStoragePermission();
   setDefaultDates();
   generateInvoiceNumber();
-  addLine();           // default first line
+  addLine();
   bindAllInputs();
   bindFiscalSelects();
   loadSavedData();
-  loadSavedTemplate();      // ← AÑADIR (carga plantilla guardada)
-  renderTemplatePicker();   // ← AÑADIR (pinta el selector)
+  loadSavedTemplate();    // carga plantilla guardada
+  renderTemplatePicker(); // pinta el selector
   updatePreview();
   updateHashChainInfo();
 });
@@ -515,7 +525,6 @@ function updateLine(id, field, value) {
     line.price = parseFloat(value) || 0;
   }
 
-  // Update total display in the row
   const container = document.getElementById('linesContainer');
   const row = container.querySelector(`[data-id="${id}"]`);
   if (row) {
@@ -643,6 +652,15 @@ function updatePreview() {
   if (invoiceNotes) footerParts.push(`<div class="inv-footer-row"><span>${escapeHtml(invoiceNotes)}</span></div>`);
   if (exemptNote && ivaRate === 0) footerParts.push(`<div class="inv-exempt-note">${escapeHtml(exemptNote)}</div>`);
 
+  /*
+   * FIX tachado emails/direcciones:
+   * - Los emails se renderizan con safeMail() que sustituye "@" y "."
+   *   por entidades HTML, impidiendo que el navegador los detecte como
+   *   enlaces y aplique estilos UA que html2canvas captura como tachado.
+   * - La clase de plantilla activa (tpl-${state.template}) se aplica
+   *   al div raíz del documento para que los estilos de templates.css
+   *   sobrescriban correctamente.
+   */
   preview.innerHTML = `
     <div class="inv-document tpl-${state.template || 'classic'}" id="invoiceDocument">
 
@@ -651,7 +669,7 @@ function updatePreview() {
           <div class="inv-brand-name">${escapeHtml(emisorNombre) || 'Tu Empresa'}</div>
           ${val('emisorNif') ? `<div class="inv-brand-nif">NIF: ${escapeHtml(val('emisorNif'))}</div>` : ''}
           ${val('emisorDireccion') ? `<div class="inv-brand-address">${escapeHtml(val('emisorDireccion'))}</div>` : ''}
-          ${val('emisorEmail') ? `<div class="inv-brand-nif">${escapeHtml(val('emisorEmail'))}</div>` : ''}
+          ${val('emisorEmail') ? `<div class="inv-brand-nif"><span style="text-decoration:none;display:inline">${safeMail(val('emisorEmail'))}</span></div>` : ''}
           ${val('emisorTelefono') ? `<div class="inv-brand-nif">${escapeHtml(val('emisorTelefono'))}</div>` : ''}
         </div>
         <div class="inv-meta">
@@ -673,7 +691,7 @@ function updatePreview() {
           <div class="inv-party-name">${escapeHtml(val('clienteNombre')) || '—'}</div>
           ${val('clienteNif') ? `<div class="inv-party-detail">NIF: ${escapeHtml(val('clienteNif'))}</div>` : ''}
           ${val('clienteDireccion') ? `<div class="inv-party-detail">${escapeHtml(val('clienteDireccion'))}</div>` : ''}
-          ${val('clienteEmail') ? `<div class="inv-party-detail">${escapeHtml(val('clienteEmail'))}</div>` : ''}
+          ${val('clienteEmail') ? `<div class="inv-party-detail"><span style="text-decoration:none;display:inline">${safeMail(val('clienteEmail'))}</span></div>` : ''}
         </div>
       </div>
 
@@ -713,6 +731,7 @@ function updatePreview() {
 
 // =============================================
 // PRINT / PDF — Mobile-compatible via html2canvas + jsPDF
+// FIX: manejo especial de plantillas oscuras + strip text-decoration
 // =============================================
 async function printInvoice() {
   const invoiceDoc = document.getElementById('invoiceDocument');
@@ -721,36 +740,53 @@ async function printInvoice() {
     return;
   }
 
-  // Check libraries are loaded
   if (typeof html2canvas === 'undefined' || typeof window.jspdf === 'undefined') {
     showToast('⏳ Cargando librerías… inténtalo de nuevo');
     return;
   }
 
-  // Disable button to prevent double-click
   const btn = document.querySelector('.btn--primary');
   if (btn) { btn.disabled = true; btn.style.opacity = '0.6'; }
 
   showToast('⏳ Generando PDF…');
 
+  // Determina si la plantilla activa tiene fondo oscuro
+  const isDarkTemplate = DARK_TEMPLATES.includes(state.template);
+
   try {
-    // Render the invoice with forced light theme + fixed width for consistent output
     const canvas = await html2canvas(invoiceDoc, {
       scale: 2,
       useCORS: true,
       allowTaint: false,
-      backgroundColor: '#ffffff',
+      // Fondo: null para oscuras (preserva su color), blanco para claras
+      backgroundColor: isDarkTemplate ? null : '#ffffff',
       logging: false,
       width: invoiceDoc.scrollWidth,
       height: invoiceDoc.scrollHeight,
       onclone: (clonedDoc) => {
-        // Force light theme on the clone so dark-mode users get a white PDF
-        clonedDoc.documentElement.setAttribute('data-theme', 'light');
-        // Ensure the cloned invoice document has white background
+        // Solo forzar tema claro en plantillas que no son intrínsecamente oscuras
+        if (!isDarkTemplate) {
+          clonedDoc.documentElement.setAttribute('data-theme', 'light');
+          const clonedInvoice = clonedDoc.getElementById('invoiceDocument');
+          if (clonedInvoice) {
+            clonedInvoice.style.background = '#ffffff';
+            clonedInvoice.style.color = '#111111';
+          }
+        }
+
+        /*
+         * FIX TACHADO — Eliminación de text-decoration en el render PDF:
+         * html2canvas captura los estilos computados del UA stylesheet
+         * (auto-linking de emails). Forzamos none en todos los elementos
+         * del documento de factura clonado.
+         */
         const clonedInvoice = clonedDoc.getElementById('invoiceDocument');
         if (clonedInvoice) {
-          clonedInvoice.style.background = '#ffffff';
-          clonedInvoice.style.color = '#111111';
+          clonedInvoice.querySelectorAll('*').forEach(el => {
+            el.style.textDecoration = 'none';
+            el.style.webkitTextDecoration = 'none';
+          });
+          clonedInvoice.style.textDecoration = 'none';
         }
       }
     });
@@ -763,30 +799,26 @@ async function printInvoice() {
       compress: true
     });
 
-    const pageW = pdf.internal.pageSize.getWidth();   // 210mm
-    const pageH = pdf.internal.pageSize.getHeight();  // 297mm
-    const margin = 10; // mm
-    const usableW = pageW - margin * 2; // 190mm
-    const usableH = pageH - margin * 2; // 277mm
+    const pageW = pdf.internal.pageSize.getWidth();
+    const pageH = pdf.internal.pageSize.getHeight();
+    const margin = 10;
+    const usableW = pageW - margin * 2;
+    const usableH = pageH - margin * 2;
 
-    // Calculate image dimensions preserving aspect ratio
     const aspectRatio = canvas.width / canvas.height;
     let imgW = usableW;
     let imgH = imgW / aspectRatio;
 
-    // If taller than one page, scale down to fit
     if (imgH > usableH) {
       imgH = usableH;
       imgW = imgH * aspectRatio;
     }
 
-    // Center horizontally if narrower than page
     const xOffset = margin + (usableW - imgW) / 2;
 
     const imgData = canvas.toDataURL('image/jpeg', 0.95);
     pdf.addImage(imgData, 'JPEG', xOffset, margin, imgW, imgH);
 
-    // Safe filename (remove special chars)
     const rawNumber = val('invoiceNumber') || 'factura';
     const filename = rawNumber.replace(/[^a-zA-Z0-9\-_]/g, '_') + '.pdf';
 
@@ -797,7 +829,6 @@ async function printInvoice() {
     console.error('PDF generation error:', err);
     showToast('❌ Error al generar el PDF. Recarga la página.');
   } finally {
-    // Re-enable button
     if (btn) { btn.disabled = false; btn.style.opacity = '1'; }
   }
 }
@@ -842,7 +873,6 @@ ${val('bankAccount') ? `IBAN: ${val('bankAccount')}` : ''}
   navigator.clipboard.writeText(text)
     .then(() => showToast('📋 Factura copiada al portapapeles'))
     .catch(() => {
-      // Fallback
       const ta = document.createElement('textarea');
       ta.value = text;
       ta.style.position = 'fixed';
@@ -925,17 +955,14 @@ function resetForm() {
   ];
   fields.forEach(id => setVal(id, ''));
 
-  // Reset lines
   state.lines = [];
   state.lineIdCounter = 0;
   addLine();
 
-  // Reset selects
   setVal('ivaType', '21');
   setVal('irpfType', '0');
   document.getElementById('exemptNoteGroup').style.display = 'none';
 
-  // New invoice number
   const newNum = incrementInvoiceCounter();
   setVal('invoiceNumber', newNum);
 
@@ -990,7 +1017,6 @@ function formatCurrency(amount) {
 
 function formatNumber(num) {
   if (isNaN(num)) return '0';
-  // Show decimals only if needed
   return parseFloat(num).toLocaleString('es-ES', {
     minimumFractionDigits: 0,
     maximumFractionDigits: 3
@@ -1005,6 +1031,20 @@ function escapeHtml(str) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
+}
+
+/**
+ * safeMail — FIX tachado de emails en PDF.
+ * Sustituye "@" y "." por entidades HTML para que el navegador
+ * no auto-detecte el texto como un enlace mailto y aplique
+ * estilos UA que html2canvas renderiza como text-decoration: line-through.
+ * El texto sigue siendo legible en pantalla y en el PDF.
+ */
+function safeMail(email) {
+  if (!email) return '';
+  return escapeHtml(email)
+    .replace(/@/g, '&#64;')
+    .replace(/\./g, '&#46;');
 }
 
 function showToast(message, duration = 2800) {
