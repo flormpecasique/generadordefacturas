@@ -12,6 +12,7 @@ let state = {
   lines: [],
   storageEnabled: false,
   lineIdCounter: 0
+  template: 'classic'
 };
 
 // =============================================
