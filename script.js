@@ -287,6 +287,8 @@ document.addEventListener('DOMContentLoaded', () => {
   bindAllInputs();
   bindFiscalSelects();
   loadSavedData();
+  loadSavedTemplate();      // ← AÑADIR (carga plantilla guardada)
+  renderTemplatePicker();   // ← AÑADIR (pinta el selector)
   updatePreview();
   updateHashChainInfo();
 });
