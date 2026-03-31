@@ -801,9 +801,9 @@ async function printInvoice() {
 
     const { jsPDF } = window.jspdf;
 
-    const mmPerPx   = A4_MM_WIDTH / (A4_PX_WIDTH * SCALE);
-    const totalMmH  = canvas.height * mmPerPx;
-    const pageCount = Math.ceil(totalMmH / A4_MM_HEIGHT);
+    const mmPerPx        = A4_MM_WIDTH / (A4_PX_WIDTH * SCALE);
+    const realContentMmH = invoiceDoc.scrollHeight * (A4_MM_WIDTH / A4_PX_WIDTH);
+    const pageCount      = Math.max(1, Math.ceil(realContentMmH / A4_MM_HEIGHT));
 
     const pdf = new jsPDF({
       orientation: 'portrait',
