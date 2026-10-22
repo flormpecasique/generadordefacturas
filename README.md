@@ -2,7 +2,7 @@
 
 ![banner](generadordefacturas.jpeg)
 
-💻 **Demo Online:** [[Enlace a la app](https://generadordefacturas.vercel.app/)]
+💻 **Demo Online:** [generadordefacturas.vercel.app](https://generadordefacturas.vercel.app/)
 
 ---
 
@@ -10,8 +10,6 @@
 
 Generador de facturas online **gratuito, legal y profesional**, pensado para autónomos en España.  
 Diseñado para ser **minimalista, intuitivo y eficiente**, inspirado en Notion, Stripe y Linear, pero con identidad propia.  
-
-Te damos la bienvenida al portapapeles de Gboard. Aquí se guardarán los textos que copies.
 
 ⚠️ Proyecto en desarrollo. No usar como software de facturación oficial.
 
